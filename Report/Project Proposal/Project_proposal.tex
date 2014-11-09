@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Allows the inclusion of images
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[a4paper]{geometry}
+
+
+\renewcommand{\thesection}{\thepart \arabic{section}}
+\renewcommand{\thesubsection}{\thepart \arabic{section}.\alph{subsection}}
+
+\title{Project proposal \\ \underline{Functional Maps: A flexible representation }\\ \underline{of maps between shapes (\cite{ovsjanikov2012functional})}\\ \textit{Object recognition class}} % Title
+
+\author{Nicolas \textsc{Paumier}, Alexandre \textsc{This}} % Author name
+
+\date{\today} % Specify a date for the report
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+
+
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+\vspace{3cm}
+\textbf{Object proposal : } You will submit a 1-page project proposal indicating (i) your chosen topic, (ii) the plan of work, i.e. what are you going to implement, what data you are going to use, what experiments you are going to do, (iii) if working in a group, who are the members of the group and how you plan to share the work. The project proposal will represent 10\% of the final project grade.
+
+\tableofcontents
+
+\newpage
+
+\section{Plan of work}
+\subsection{Implementation}
+The matlab code of Laplace-Beltrami eigenfunctions, Heat Kernel Signature and Wave Kernel Signature computations are provided. Hence, the work will focus on the following tasks :
+
+\begin{itemize}
+\item[--]{Compute the function preservation constraints (using descriptor preservation). We might also implement the persistence-based segmentation technique (\cite{}) to add segment preservation constraints to the previous constraints. \textbf{[Nicolas Paumier, Alexandre This]}}
+\item[--]{Compute the operator commutativity constraints. \textbf{[Nicolas Paumier, Alexandre This]}}
+\item[--]{Write the linear system. \textbf{[Nicolas Paumier, Alexandre This]}}
+\item[--]{Use the least-square optimisation to compute the map $C_{0}$. \textbf{[Nicolas Paumier, Alexandre This]}}
+\item[--]{Refine the map $C_{0}$ using the algorithm described (similar to the Iterative Closest Point algorithm. \textbf{[Nicolas Paumier]}}
+\item[--]{Implement the conversion to Point-to-point mapping. \textbf{[Alexandre This]}}
+\end{itemize}
+
+\subsection{Data}
+In order to test this implementation, we will use the data provided by the lecturer.
+
+\subsection{Tests and experiments}
+We identified some tests and experiments we will accomplish :
+
+\begin{itemize}
+\item[--]{Compare the results obtained with the results presented in \cite{ovsjanikov2012functional} \textbf{[Nicolas Paumier, Alexandre This]}}
+\item[--]{Modify the descriptors (WKS only, HKS only, or with different parameters \textbf{[Alexandre This]}}
+\item[--]{Try with and without the refinement step \textbf{[Alexandre This]}}
+\item[--]{Add landmark correspondences constraints \textbf{[Nicolas Paumier]}}
+\item[--]{Modify the Laplace-Beltrami operator used \textbf{[Nicolas Paumier, Alexandre This]}}
+\end{itemize}
+
+\section{Group planning}
+This project will be done in a group composed of Nicolas Paumier and Alexandre This. \\
+
+Each line of the previously described plan of work is followed by the name of the member of the project which describes the share of the work (e.g : Implement the conversion to point-to-point mapping \textbf{[Alexandre This]})
+
+\bibliographystyle{plain}
+\bibliography{citations}
+
+\end{document}
