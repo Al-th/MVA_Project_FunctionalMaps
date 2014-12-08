@@ -45,7 +45,7 @@ function [WKS,E,PHI,L] = compute_WKS(vertices,faces)
 
 %% parameters
 
-n_eigenvalues=300; % number of eigenvalues used for computations
+n_eigenvalues=100; % number of eigenvalues used for computations
 % depending on the application, you can use less than 300
 N = 100; % number of evaluations of WKS
 wks_variance = 6; % variance of the WKS gaussian (wih respect to the 

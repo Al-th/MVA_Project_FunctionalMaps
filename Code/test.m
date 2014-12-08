@@ -26,11 +26,20 @@ shape1.name = name;
 vertex = vertex'; faces = faces';
 shape1.vertex = vertex;
 shape1.faces = faces;
+%Compute ALB
 [PHI,E,L,Am] = ALB_spectrum(vertex,faces);
 shape1.phi = PHI;
 shape1.E = E;
+shape1.Am = Am;
+%Compute HKS
 hks = HKS(PHI, E, diag(Am), false);
 shape1.HKS = hks;
+%Compute WKS
+[WKS,E_wks,PHI_wks,L_wks] = compute_wks(vertex,faces);
+shape1.WKS = WKS;
+shape1.wks_phi = PHI_wks;
+shape1.wks_E = E_wks;
+clear WKS; clear E_wks; clear PHI_wks; clear L_wks;
 clear hks;
 clear PHI; clear E; clear L; clear Am;
 clear vertex; clear faces; clear name;
@@ -45,10 +54,27 @@ shape2.faces = faces;
 [PHI,E,L,Am] = ALB_spectrum(vertex,faces);
 shape2.phi = PHI;
 shape2.E = E;
+shape2.Am = Am;
 hks = HKS(PHI, E, diag(Am), false);
 shape2.HKS = hks;
+[WKS,E_wks,PHI_wks,L_wks] = compute_wks(vertex,faces);
+shape2.WKS = WKS;
+shape2.wks_phi = PHI_wks;
+shape2.wks_E = E_wks;
+clear WKS; clear E_wks; clear PHI_wks; clear L_wks;
 clear hks;
 clear PHI; clear E; clear L; clear Am;
 clear vertex; clear faces; clear name;
+
+
+a1 = shape1.phi(1:10000,:)'*shape1.HKS(1:10000,:);
+a2 = shape1.phi(10001:end,:)'*shape1.HKS(10001:end,:);
+a3 = shape1.wks_phi'*shape1.WKS;
+a = [a1 a2 a3];
+
+b1 = shape2.phi(1:10000,:)'*shape2.Am*shape2.HKS(1:10000,:);
+b2 = shape2.wks_phi(10001:end,:)'*shape2.WKS(10001:end,:);
+b = [b1 b2];
+
 
 
