@@ -8,3 +8,4 @@ path(path, 'LBOperator/');
 path(path, 'LBOperator/tools');
 path(path, 'WKS/');
 path(path, 'HKS/');
+path(path, 'kdtree');
