@@ -49,10 +49,18 @@ clear vertex; clear faces; clear name;
 %%
 %Compute connected component of shape 1
 
-C = compute_connected_component(shape1,20);
-
+[C,PD] = compute_connected_component(shape1,80);
+figure(1);
 options.face_vertex_color = C;
 plot_mesh(shape1.vertex,shape1.faces,options);
+shading interp; colormap jet(256);
+%%
+%Compute connected component of shape 2
+
+[C2,PD] = compute_connected_component(shape2,80);
+figure(2);
+options.face_vertex_color = C2;
+plot_mesh(shape2.vertex,shape2.faces,options);
 shading interp; colormap jet(256);
 
 

@@ -1,4 +1,4 @@
-function connected_component = compute_connected_component(shape,tau)
+function [connected_component, PD] = compute_connected_component(shape,tau)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 %parameters
@@ -6,7 +6,8 @@ function connected_component = compute_connected_component(shape,tau)
 num_vertices = size(shape.vertex,1);
 num_faces = size(shape.faces,1);
 C = zeros(num_vertices,1);
-
+PD = [];
+nb_merge = 0;
 % sort vertex w.r.t to WKS
 wks = sum(shape.WKS');
 [~,perm]=sort(wks,'descend');
@@ -63,7 +64,9 @@ for i=1:num_vertices,
                 if( x1 < x2 )
                     if( x1 - a <= tau )
                         %We merge
+                        nb_merge = nb_merge +1;
                         C(C==C(k)) = C(idx_x);
+                        PD(nb_merge,:) = [x1 a];
                     else
                         %We don't merge
                     end
