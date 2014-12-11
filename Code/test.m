@@ -26,7 +26,7 @@ clear vertex; clear faces; clear name;
 
 %%
 %load shape 2
-name = 'Data/shrec10/0003.isometry.5.off';
+name = 'Data/shrec10/0003.isometry.2.off';
 shape2.name = name;
 [vertex,faces] = read_off(name);
 vertex = vertex'; faces = faces';
@@ -57,7 +57,7 @@ shading interp; colormap jet(256);
 %%
 %Compute connected component of shape 2
 
-[C2,PD] = compute_connected_component(shape2,80);
+[C2,PD] = compute_connected_component(shape2,100);
 figure(2);
 options.face_vertex_color = C2;
 plot_mesh(shape2.vertex,shape2.faces,options);
