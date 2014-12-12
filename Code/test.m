@@ -26,7 +26,7 @@ clear vertex; clear faces; clear name;
 
 %%
 %load shape 2
-name = 'Data/shrec10/0003.isometry.1.off';
+name = 'Data/shrec10/0003.isometry.2.off';
 shape2.name = name;
 [vertex,faces] = read_off(name);
 vertex = vertex'; faces = faces';
@@ -71,26 +71,36 @@ list_label_C2 = union(C2,C2);
 
 %%
 %Matching segment bewteen shape1 and shape2
-list_descriptors_C1 = compute_descriptors(shape1);
+list_matching = [];
 
+list_descriptors_C1 = compute_descriptors(shape1);
 list_descriptors_C2 = compute_descriptors(shape2);
 
-[~,perm1] = sort(list_descriptors_C1);
-[~,perm2] = sort(list_descriptors_C2);
 
-list_matching = [];
-for i1=1:size(list_descriptors_C1,1)
-    %Find best match on list_descriptors_C2
-    desc1 = list_descriptors_C1(i1);
-    for i2=1:size(list_descriptors_C2,1)
-        
+%[~,perm1] = sort(list_descriptors_C1);
+%[~,perm2] = sort(list_descriptors_C2);
+nb_comp_C1 = size(list_label_C1,1);
+nb_comp_C2 = size(list_label_C2,1);
+
+err=[];
+for i=1:nb_comp_C1
+    for j=1:nb_comp_C2
+        err(i,j) = (list_descriptors_C1(i) - list_descriptors_C2(j))^2./(list_descriptors_C1(i) + list_descriptors_C2(j));
     end
 end
-
-diff = abs(list_descriptors_C1(perm1) - list_descriptors_C2(perm2))...
-    ./(list_descriptors_C1(perm1) + list_descriptors_C2(perm2));
-
-list_matching = [ list_label_C1(perm1) list_label_C2(perm2) diff];
+i = 0;
+INFTY = max(max(err))+1;
+while(i~=min(nb_comp_C1,nb_comp_C2))
+    i = i+1;
+    [min_per_col,idx_row] = min(err);
+    [diff,idx_col] = min(min_per_col);
+    list_matching(i,:) = [ list_label_C1(idx_row(idx_col)) list_label_C2(idx_col) diff ];
+    
+    % Replace idx_row(idx_col)th row and idx_colth col of err with a high
+    % value
+    err(idx_row(idx_col),:) = INFTY;
+    err(:,idx_col) = INFTY;
+end
 
 %Plot mesh with color correspondence to same segment
 figure(1);
