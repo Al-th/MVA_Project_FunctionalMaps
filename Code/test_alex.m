@@ -16,6 +16,7 @@ shape1.faces = faces;
 shape1.phi = PHI;
 shape1.E = E;
 shape1.Am = Am;
+shape1.L  = L;
 %Compute HKS
 hks = HKS(PHI, E, diag(Am), false);
 shape1.HKS = hks;
@@ -38,6 +39,7 @@ shape2.faces = faces;
 shape2.phi = PHI;
 shape2.E = E;
 shape2.Am = Am;
+shape2.L = L;
 %Compute HKS
 hks = HKS(PHI, E, diag(Am), false);
 shape2.HKS = hks;
@@ -60,11 +62,11 @@ b = [b1 b2];
 
 C = b/a;
 %%
-%Build KD-tree
+%Test KD-tree
 tree1 = kdtree_build(shape1.phi);
 tree2 = kdtree_build(shape2.phi);
 
-%%
+%
 clear options
 colors = zeros(19248,1);
 colors(1:1000,1) = 2;
@@ -88,20 +90,6 @@ options2.face_vertex_color = color;
 plot_mesh(shape2.vertex,shape2.faces,options2);
 shading interp; colormap jet(256);
 
-%%
-%Refinement of C
-clc
-C0 = C;
-%%
-
-C0P1 = (C0*shape1.phi')';
-s = 0;
-for i = 1:19248
-    pSearch = C0P1(i,:);
-    nn = kdtree_k_nearest_neighbors(tree2,pSearch,1);
-    nnVal = shape2.phi(nn,:);
-    s=s+norm(pSearch-nnVal);
-end
 
 %%
 %How many eigenfunctions are needed
@@ -112,8 +100,6 @@ end
 % 1. Project function on the eigenfunctions of the LB operator
 % 2. Reconstruct function based on first eigenvalues
 % 3. Take the sum of the function to see how it converges
-
-
 func = shape1.WKS(:,5)
 shape1.projectedFunction = shape1.phi'*shape1.Am*func;
 shape1.reconstructedFunction = zeros(19248,1);
@@ -127,14 +113,34 @@ for i = 1:100
     options.face_vertex_color = shape1.reconstructedFunction;
     plot_mesh(shape1.vertex,shape1.faces,options);
     shading interp; colormap jet(256);
-    pause(0.5);
+    pause(0.1);
 end
 plot(s);
 hold on
 plot(repmat(sum(sum(func))/19248,1,100),'r')
 %%
-
 figure(1);
 options.face_vertex_color = shape1.HKS(:,2);
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
+
+%%
+% Post processing iterative refinement
+tree2 = kdtree_build(shape2.phi);
+C = eye(100,100);
+
+C_iteration = C;
+
+for iteration = 1:1000
+    CPHI_M = C_iteration*shape1.phi';
+    correspondences = zeros(19248,1);
+    for i = 1:19248
+        if(mod(i,100)==0)
+            i
+        end
+        [idx] = kdtree_k_nearest_neighbors(tree2,CPHI_M(:,i),1);
+        correspondences(i) = idx;
+    end
+    e = CPHI_M - shape2.phi(correspondences,:);
+    sum(sum(e))
+end
