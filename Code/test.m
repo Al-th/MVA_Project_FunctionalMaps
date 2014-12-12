@@ -49,17 +49,17 @@ clear vertex; clear faces; clear name;
 %%
 %Compute connected component of shape 1
 
-[C,PD] = compute_connected_component(shape1,80);
+C = persistance_based_segmentation(shape1,7);
 figure(1);
-options.face_vertex_color = C;
+options.face_vertex_color = compute_color_from_connected_component(C);
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
 %%
 %Compute connected component of shape 2
 
-[C2,PD] = compute_connected_component(shape2,100);
+C2 = persistance_based_segmentation(shape2,7);
 figure(2);
-options.face_vertex_color = C2;
+options.face_vertex_color = compute_color_from_connected_component(C2);
 plot_mesh(shape2.vertex,shape2.faces,options);
 shading interp; colormap jet(256);
 
