@@ -50,17 +50,7 @@ clear WKS; clear hks;
 clear PHI; clear E; clear L; clear Am;
 clear vertex; clear faces; clear name;
 
-%%
-% Add constraint to linear system
-a1 = shape1.phi'*shape1.Am*shape1.HKS;
-a2 = shape1.phi'*shape1.Am*shape1.WKS;
-a = [a1 a2];
 
-b1 = shape2.phi'*shape2.Am*shape2.HKS;
-b2 = shape2.phi'*shape1.Am*shape2.WKS;
-b = [b1 b2];
-
-C = b/a;
 %%
 %Test KD-tree
 tree1 = kdtree_build(shape1.phi);
@@ -144,3 +134,46 @@ for iteration = 1:1000
     e = CPHI_M - shape2.phi(correspondences,:);
     sum(sum(e))
 end
+
+%% Writing linear constraints for C determination
+%%Descriptor preservation
+%C*A = B
+f1 = shape1.HKS(:,1);
+f2 = shape2.HKS(:,2);
+A = shape1.phi'*shape1.Am*f1;
+B = shape2.phi'*shape2.Am*f2;
+
+n = size(shape1.phi,2);
+MA = zeros(n,n*n);
+for i = 1:n
+    for j = 1:n
+        MA(i,(i-1)*n+j) = A(j); 
+    end
+end
+constraintsDescriptor = MA;
+
+%% Operator commutativity constraints
+clear f1,f2,A,B;
+f = shape1.HKS(:,1);
+A = shape1.phi'*shape1.Am*shape1.L*f;
+B = shape2.phi'*shape2.Am*shape2.L*shape2.phi;
+D = shape1.phi'*shape1.Am*f;
+
+n = size(shape1.phi,2);
+MA = zeros(n,n*n);
+for i = 1:n
+    for j = 1:n
+        MA(i,(i-1)*n+j) = A(j); 
+    end
+end
+
+MBD = zeros(n,n*n);
+
+for i = 1:n
+    for j = 1:n*n
+        dIndex = mod(j-1,n)+1;
+        M1(i,j) = -D(dIndex) * B(i,floor((j-1)/n)+1); 
+    end
+end
+constraintsCommutativity = MA+MBD;
+
