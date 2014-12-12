@@ -136,44 +136,35 @@ for iteration = 1:1000
 end
 
 %% Writing linear constraints for C determination
-%%Descriptor preservation
-%C*A = B
-f1 = shape1.HKS(:,1);
-f2 = shape2.HKS(:,2);
-A = shape1.phi'*shape1.Am*f1;
-B = shape2.phi'*shape2.Am*f2;
 
-n = size(shape1.phi,2);
-MA = zeros(n,n*n);
-for i = 1:n
-    for j = 1:n
-        MA(i,(i-1)*n+j) = A(j); 
-    end
-end
-constraintsDescriptor = MA;
+A = [];
+b = [];
 
-%% Operator commutativity constraints
-clear f1,f2,A,B;
-f = shape1.HKS(:,1);
-A = shape1.phi'*shape1.Am*shape1.L*f;
-B = shape2.phi'*shape2.Am*shape2.L*shape2.phi;
-D = shape1.phi'*shape1.Am*f;
-
-n = size(shape1.phi,2);
-MA = zeros(n,n*n);
-for i = 1:n
-    for j = 1:n
-        MA(i,(i-1)*n+j) = A(j); 
-    end
+%%add descriptor preservation constraints
+for i = 1:size(shape1.HKS,2)
+    [dA,db] = computeDescriptorConstraints(shape1.HKS(:,i),shape1,shape2.HKS(:,i),shape2);
+    A = sparse([A ; dA]);
+    b = sparse([b ; db]);
 end
 
-MBD = zeros(n,n*n);
-
-for i = 1:n
-    for j = 1:n*n
-        dIndex = mod(j-1,n)+1;
-        M1(i,j) = -D(dIndex) * B(i,floor((j-1)/n)+1); 
-    end
+%%
+for i = 1:size(shape1.WKS,2)
+    [dA,db] = computeDescriptorConstraints(shape1.WKS(:,i),shape1,shape2.WKS(:,i),shape2);
+    A = sparse([A ; dA]);
+    b = sparse([b ; db]);
 end
-constraintsCommutativity = MA+MBD;
+
+%%add operator commutativity constraints
+for i = 1:size(shape1.HKS,2)
+    [dA,db] = computeOperatorCommutativityConstraints(shape1.HKS(:,i),shape1,shape2);
+    A = sparse([A; dA]);
+    b = sparse([b; db]);
+end
+
+for i = 1:size(shape1.WKS,2)
+    [dA,db] = computeOperatorCommutativityConstraints(shape1.WKS(:,i),shape1,shape2);
+    A = sparse([A; dA]);
+    b = sparse([b; db]);
+end
+
 
