@@ -1,5 +1,5 @@
 function [constraints,equalTo] = computeOperatorCommutativityConstraints(f,shape1,shape2)
-
+%CA = B*C*D
 
 A = shape1.phi'*shape1.Am*shape1.L*f;
 B = shape2.phi'*shape2.Am*shape2.L*shape2.phi;
