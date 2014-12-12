@@ -24,7 +24,7 @@
 % THIS SOFTWARE.
 
 
-function [WKS] = compute_WKS_from_EV(E,PHI,WKS_options)
+function WKS = compute_WKS_from_EV(E,PHI,WKS_options)
 
 % function [WKS,E,PHI] = compute_WKS(vertices,faces) compute
 %   the Wave Kernel Signature of triangle mesh given by

@@ -1,8 +1,7 @@
-function color = compute_color_from_connected_component( C )
+function color = compute_color_from_connected_component( C , component_value )
 color = zeros(size(C,1),1);
-component_value = union(C,C);
 for i=1:size(component_value,1)
-    color(C==component_value(i)) = i*2500;
+    color(C==component_value(i)) = i*2000;
 end
 end
 
