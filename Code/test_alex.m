@@ -104,30 +104,37 @@ for i = 1:19248
 end
 
 %%
-%Test with own function
+%How many eigenfunctions are needed
+%Based on the idea of
+%http://alice.loria.fr/publications/papers/2006/SMI_Laplacian/SMI_Laplacian.pdf
+%to reconstruct functions based on projections
+%
+% 1. Project function on the eigenfunctions of the LB operator
+% 2. Reconstruct function based on first eigenvalues
+% 3. Take the sum of the function to see how it converges
 
-shape1.projectedHKS = shape1.phi(:,2:end)'*shape1.Am*shape1.HKS(:,5);
-%%
 
+func = shape1.WKS(:,5)
+shape1.projectedFunction = shape1.phi'*shape1.Am*func;
+shape1.reconstructedFunction = zeros(19248,1);
 
-shape1.reconstructedWKS = zeros(19248,1);
-
-for i = 1:99
-    shape1.reconstructedWKS = shape1.reconstructedWKS + shape1.projectedHKS(i)*shape1.phi(:,i+1);
-    if (mod(i,9)==0)
-        figure(1);
-        clf
-        options.face_vertex_color = shape1.reconstructedWKS;
-        plot_mesh(shape1.vertex,shape1.faces,options);
-        shading interp; colormap jet(256);
-        pause();
-        
-        sum(sum(shape1.reconstructedWKS))
-    end
+s = [];
+for i = 1:100
+    shape1.reconstructedFunction = shape1.reconstructedFunction + shape1.projectedFunction(i)*shape1.phi(:,i);
+    s = [s sum(sum(shape1.reconstructedFunction))/19248];
+    figure(1);
+    clf
+    options.face_vertex_color = shape1.reconstructedFunction;
+    plot_mesh(shape1.vertex,shape1.faces,options);
+    shading interp; colormap jet(256);
+    pause(0.5);
 end
+plot(s);
+hold on
+plot(repmat(sum(sum(func))/19248,1,100),'r')
 %%
 
 figure(1);
-options.face_vertex_color = shape1.WKS(:,5);
+options.face_vertex_color = shape1.HKS(:,2);
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
