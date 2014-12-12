@@ -2,7 +2,7 @@ clear; clc;
 init;
 %%
 
-alboptions.n_eigenvalues = 2; 
+alboptions.n_eigenvalues = 100; 
 %%
 %load shape 1
 name = 'Data/shrec10/0003.null.0.off';
@@ -102,4 +102,32 @@ for i = 1:19248
     nnVal = shape2.phi(nn,:);
     s=s+norm(pSearch-nnVal);
 end
-s
+
+%%
+%Test with own function
+
+shape1.projectedHKS = shape1.phi(:,2:end)'*shape1.Am*shape1.HKS(:,5);
+%%
+
+
+shape1.reconstructedWKS = zeros(19248,1);
+
+for i = 1:99
+    shape1.reconstructedWKS = shape1.reconstructedWKS + shape1.projectedHKS(i)*shape1.phi(:,i+1);
+    if (mod(i,9)==0)
+        figure(1);
+        clf
+        options.face_vertex_color = shape1.reconstructedWKS;
+        plot_mesh(shape1.vertex,shape1.faces,options);
+        shading interp; colormap jet(256);
+        pause();
+        
+        sum(sum(shape1.reconstructedWKS))
+    end
+end
+%%
+
+figure(1);
+options.face_vertex_color = shape1.WKS(:,5);
+plot_mesh(shape1.vertex,shape1.faces,options);
+shading interp; colormap jet(256);

@@ -9,7 +9,7 @@ C = zeros(num_vertices,1);
 PD = [];
 nb_merge = 0;
 % sort vertex w.r.t to WKS
-wks = sum(shape.WKS');
+wks = shape.WKS(:,5); %sum(shape.WKS');
 [~,perm]=sort(wks,'descend');
 perm = perm'; % shape.vertex(perm(1))
 
