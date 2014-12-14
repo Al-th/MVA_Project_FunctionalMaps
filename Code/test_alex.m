@@ -1,65 +1,116 @@
-clear; clc;
+clear; 
+clc;
 init;
-%%
 
-alboptions.n_eigenvalues = 100; 
-%%
-%load shape 1
-name = 'Data/shrec10/0003.null.0.off';
-shape1.name = name;
-[vertex,faces] = read_off(name);
-vertex = vertex'; faces = faces';
-shape1.vertex = vertex;
-shape1.faces = faces;
-%Compute ALB
-[PHI,E,L,Am] = ALB_spectrum(vertex,faces,alboptions);
-shape1.phi = PHI;
-shape1.E = E;
-shape1.Am = Am;
-shape1.L  = L;
-%Compute HKS
-hks = HKS(PHI, E, diag(Am), false);
-shape1.HKS = hks;
-%Compute WKS
-WKS = compute_WKS_from_EV(E,PHI,alboptions);
-shape1.WKS = WKS;
-clear WKS; clear hks;
-clear PHI; clear E; clear L; clear Am;
-clear vertex; clear faces; clear name;
+name1 = 'Data/shrec10/0003.null.0.off';
+name2 = 'Data/shrec10/0003.isometry.1.off';
+
+shape1 = getShape(name1);
+shape2 = getShape(name2);
 
 %%
-%load shape 2
-name = 'Data/shrec10/0003.isometry.5.off';
-shape2.name = name;
-[vertex,faces] = read_off(name);
-vertex = vertex'; faces = faces';
-shape2.vertex = vertex;
-shape2.faces = faces;
-[PHI,E,L,Am] = ALB_spectrum(vertex,faces,alboptions);
-shape2.phi = PHI;
-shape2.E = E;
-shape2.Am = Am;
-shape2.L = L;
-%Compute HKS
-hks = HKS(PHI, E, diag(Am), false);
-shape2.HKS = hks;
-%Compute WKS
-WKS = compute_WKS_from_EV(E,PHI,alboptions);
-shape2.WKS = WKS;
-clear WKS; clear hks;
-clear PHI; clear E; clear L; clear Am;
-clear vertex; clear faces; clear name;
+
+C1 = persistance_based_segmentation(shape1,7);
+shape1.connected_component = C1;
+list_label_C1 = union(C1,C1);
+
+
+C2 = persistance_based_segmentation(shape2,7);
+shape2.connected_component = C2;
+list_label_C2 = union(C2,C2);
+
+list_matching = [];
+
+list_descriptors_C1 = compute_descriptors(shape1);
+list_descriptors_C2 = compute_descriptors(shape2);
+
+
+%[~,perm1] = sort(list_descriptors_C1);
+%[~,perm2] = sort(list_descriptors_C2);
+nb_comp_C1 = size(list_label_C1,1);
+nb_comp_C2 = size(list_label_C2,1);
+
+err=[];
+for i=1:nb_comp_C1
+    for j=1:nb_comp_C2
+        err(i,j) = (list_descriptors_C1(i) - list_descriptors_C2(j))^2./(list_descriptors_C1(i) + list_descriptors_C2(j));
+    end
+end
+i = 0;
+INFTY = max(max(err))+1;
+while(i~=min(nb_comp_C1,nb_comp_C2))
+    i = i+1;
+    [min_per_col,idx_row] = min(err);
+    [diff,idx_col] = min(min_per_col);
+    list_matching(i,:) = [ list_label_C1(idx_row(idx_col)) list_label_C2(idx_col) diff ];
+    
+    % Replace idx_row(idx_col)th row and idx_colth col of err with a high
+    % value
+    err(idx_row(idx_col),:) = INFTY;
+    err(:,idx_col) = INFTY;
+end
+
+%Plot mesh with color correspondence to same segment
+figure(1);
+options.face_vertex_color = compute_color_from_connected_component(C1, list_matching(:,1));
+plot_mesh(shape1.vertex,shape1.faces,options);
+shading interp; colormap jet(256);
+
+figure(2);
+options.face_vertex_color = compute_color_from_connected_component(C2, list_matching(:,2));
+plot_mesh(shape2.vertex,shape2.faces,options);
+shading interp; colormap jet(256);
+
+%%
+clc
+shape1.indicComp(:,1) = 1.*(C1==11369);
+shape2.indicComp(:,1) = 1.*(C2==5801);
+
+shape1.indicComp(:,2) = 1.*(C1==15346);
+shape2.indicComp(:,2) = 1.*(C2==10856);
+
+
+
+clc
+nbIndicomp = 1;
+for i = 1:size(list_matching,1)
+     if(sum(C1==list_matching(i,1))> 500 && sum(C1==list_matching(i,1)) < 8000)
+        shape1.indicCompNOCONSTRAINTS(:,nbIndicomp) = 1.*(C1==list_matching(i,1));
+        shape2.indicCompNOCONSTRAINTS(:,nbIndicomp) = 1.*(C2==list_matching(i,2));
+        nbIndicomp = nbIndicomp +1
+    end
+
+end
+
+%%
+[C] = getFunctionalMap(shape1,shape2);
+
+%%
+HKS2_2 = shape2.phi*(shape2.phi'*shape2.Am*shape2.HKS(:,1));
+HKS1_2 = shape2.phi*C*shape1.phi'*shape1.Am*shape1.HKS(:,1);
+
+option.face_vertex_color = HKS2_2;
+plot_mesh(shape2.vertex,shape2.faces,option);
+shading interp; 
+colormap jet;
+
+figure();
+option.face_vertex_color = HKS1_2;
+plot_mesh(shape2.vertex,shape2.faces,option);
+shading interp; 
+colormap jet;
+
 
 
 %%
 %Test KD-tree
-tree1 = kdtree_build(shape1.phi);
-tree2 = kdtree_build(shape2.phi);
+shape1.tree = kdtree_build(shape1.phi);
+shape2.tree = kdtree_build(shape2.phi);
 
 %
 clear options
 colors = zeros(19248,1);
-colors(1:1000,1) = 2;
+colors(1:1000,1) = 20000;
 options.face_vertex_color = colors
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
@@ -70,7 +121,7 @@ clear options2;
 color = zeros(19248,1);
 for i = 1:1000
     p1 = shape1.phi(i,:)';
-    nn = kdtree_k_nearest_neighbors(tree2,C*p1,1);
+    nn = kdtree_k_nearest_neighbors(shape2.tree,C*p1,1);
     [fi,fj] = find(shape2.faces==nn);
     color(shape2.faces(fi,1)) = 2;
     color(shape2.faces(fi,2)) = 2;
@@ -135,55 +186,28 @@ for iteration = 1:1000
     sum(sum(e))
 end
 
-%% Writing linear constraints for C determination
+%%
 
-A = [];
-b = [];
-
-
-disp('Adding HKS preservation constraints')
-tic
-%%add descriptor preservation constraints
-for i = 1:size(shape1.HKS,2)
-    [dA,db] = computeDescriptorConstraints(shape1.HKS(:,i),shape1,shape2.HKS(:,i),shape2);
-    A = sparse([A ; dA]);
-    b = sparse([b ; db]);
+for i = 1:100    
+    subplot(2,1,2)
+    plot(C*shape1.phi'*shape1.Am*shape1.WKS(:,i)); 
+    hold on; 
+    plot(shape2.phi'*shape2.Am*shape2.WKS(:,i),'ro')
+    ylim([-1,1]);
+    hold off;
+    pause(0.1);
 end
-toc
+%%
 
-disp('Adding WKS preservation constraints')
-tic
-for i = 1:size(shape1.WKS,2)
-    [dA,db] = computeDescriptorConstraints(shape1.WKS(:,i),shape1,shape2.WKS(:,i),shape2);
-    A = sparse([A ; dA]);
-    b = sparse([b ; db]);
-end
-toc
 
-disp('Adding HKS operator commutativity constraints')
-tic
-%%add operator commutativity constraints
-for i = 1:size(shape1.HKS,2)
-    [dA,db] = computeOperatorCommutativityConstraints(shape1.HKS(:,i),shape1,shape2);
-    A = sparse([A; dA]);
-    b = sparse([b; db]);
-end
-toc
-
-disp('Adding WKS operator commutativity constraints')
-tic
-for i = 1:size(shape1.WKS,2)
-    [dA,db] = computeOperatorCommutativityConstraints(shape1.WKS(:,i),shape1,shape2);
-    A = sparse([A; dA]);
-    b = sparse([b; db]);
-end
-toc
+option.face_vertex_color = shape1.indicCompNOCONSTRAINTS(:,4);
+plot_mesh(shape1.vertex, shape1.faces, option);
+shading interp;
+colormap jet;
 
 %%
-%Solve linear system
-disp('Solving linear system Ax=b')
-tic
-x = mldivide(A,b);
-toc
-%
-C = reshape(x,100,100)';
+
+option2.face_vertex_color = shape2.phi*C*shape1.phi'*shape1.Am*shape1.indicCompNOCONSTRAINTS(:,4);
+plot_mesh(shape2.vertex, shape2.faces, option2);
+shading interp;
+colormap jet;
