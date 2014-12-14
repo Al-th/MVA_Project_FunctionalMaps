@@ -1,6 +1,6 @@
 function shape = getShape(name)
 
-alboptions.n_eigenvalues = 100; 
+alboptions.n_eigenvalues = 40; 
 shape.nbEigenvalues = alboptions.n_eigenvalues;    
 shape.name = name;
 [vertex,faces] = read_off(shape.name);

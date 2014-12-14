@@ -2,20 +2,20 @@ clear;
 clc;
 init;
 
-name1 = 'Data/shrec10/0003.null.0.off';
-name2 = 'Data/shrec10/0003.isometry.1.off';
+name1 = 'Data/shrec10/0002.null.0.off';
+name2 = 'Data/shrec10/0002.isometry.2.off';
 
 shape1 = getShape(name1);
 shape2 = getShape(name2);
 
 %%
 
-C1 = persistance_based_segmentation(shape1,7);
+C1 = persistance_based_segmentation(shape1,5);
 shape1.connected_component = C1;
 list_label_C1 = union(C1,C1);
 
 
-C2 = persistance_based_segmentation(shape2,7);
+C2 = persistance_based_segmentation(shape2,5);
 shape2.connected_component = C2;
 list_label_C2 = union(C2,C2);
 
@@ -63,23 +63,24 @@ shading interp; colormap jet(256);
 
 %%
 clc
-shape1.indicComp(:,1) = 1.*(C1==11369);
-shape2.indicComp(:,1) = 1.*(C2==5801);
+shape1.indicComp(:,1) = 1.*(C1==6365);
+shape2.indicComp(:,1) = 1.*(C2==19488);
 
-shape1.indicComp(:,2) = 1.*(C1==15346);
-shape2.indicComp(:,2) = 1.*(C2==10856);
+shape1.indicComp(:,2) = 1.*(C1==19060);
+shape2.indicComp(:,2) = 1.*(C2==11743);
+
+
+shape1.indicComp(:,2) = 1.*(C1==25094);
+shape2.indicComp(:,2) = 1.*(C2==3751);
 
 
 
 clc
 nbIndicomp = 1;
 for i = 1:size(list_matching,1)
-     if(sum(C1==list_matching(i,1))> 500 && sum(C1==list_matching(i,1)) < 8000)
         shape1.indicCompNOCONSTRAINTS(:,nbIndicomp) = 1.*(C1==list_matching(i,1));
         shape2.indicCompNOCONSTRAINTS(:,nbIndicomp) = 1.*(C2==list_matching(i,2));
         nbIndicomp = nbIndicomp +1
-    end
-
 end
 
 %%
@@ -109,28 +110,32 @@ shape2.tree = kdtree_build(shape2.phi);
 
 %
 clear options
-colors = zeros(19248,1);
-colors(1:1000,1) = 20000;
+colors = zeros(25290,1);
+colors(2000:4000,1) = 2;
 options.face_vertex_color = colors
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
 
-%%
 %Search for 100 first vertex and set colors 
 clear options2;
-color = zeros(19248,1);
-for i = 1:1000
-    p1 = shape1.phi(i,:)';
-    nn = kdtree_k_nearest_neighbors(shape2.tree,C*p1,1);
-    [fi,fj] = find(shape2.faces==nn);
-    color(shape2.faces(fi,1)) = 2;
-    color(shape2.faces(fi,2)) = 2;
-    color(shape2.faces(fi,3)) = 2;
-end
+
+%%
+figure();
 options2.face_vertex_color = color;
 plot_mesh(shape2.vertex,shape2.faces,options2);
-shading interp; colormap jet(256);
+colormap jet(256);
+hold on
 
+%%
+for i = 1:2000
+    p1 = shape1.phi(i,:)';
+    nn = kdtree_k_nearest_neighbors(shape2.tree,C*p1,1);
+    v1(i) = shape2.vertex(nn,1);
+    v2(i) = shape2.vertex(nn,2);
+    v3(i) = shape2.vertex(nn,3);
+end
+%%
+ plot3(v1,v2,v3,'ro');
 
 %%
 %How many eigenfunctions are needed
@@ -199,15 +204,18 @@ for i = 1:100
 end
 %%
 
-
-option.face_vertex_color = shape1.indicCompNOCONSTRAINTS(:,4);
+figure(1)
+fun = shape1.indicCompNOCONSTRAINTS(:,1);
+option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
+shading interp;
+colormap jet;
+%%
+
+figure(2);
+option2.face_vertex_color = shape2.phi*(C*(shape1.phi'*shape1.Am*fun));
+plot_mesh(shape2.vertex, shape2.faces, option2);
 shading interp;
 colormap jet;
 
 %%
-
-option2.face_vertex_color = shape2.phi*C*shape1.phi'*shape1.Am*shape1.indicCompNOCONSTRAINTS(:,4);
-plot_mesh(shape2.vertex, shape2.faces, option2);
-shading interp;
-colormap jet;
