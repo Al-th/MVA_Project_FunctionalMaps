@@ -1,50 +1,11 @@
 %clear; clc;
 init;
 
-%%
-%load shape 1
-name = 'Data/shrec10/0003.null.0.off';
-shape1.name = name;
-[vertex,faces] = read_off(name);
-vertex = vertex'; faces = faces';
-shape1.vertex = vertex;
-shape1.faces = faces;
-%Compute ALB
-[PHI,E,L,Am] = ALB_spectrum(vertex,faces);
-shape1.phi = PHI;
-shape1.E = E;
-shape1.Am = Am;
-%Compute HKS
-hks = HKS(PHI, E, diag(Am), false);
-shape1.HKS = hks;
-%Compute WKS
-WKS = compute_WKS_from_EV(E,PHI);
-shape1.WKS = WKS;
-clear WKS; clear hks;
-clear PHI; clear E; clear L; clear Am;
-clear vertex; clear faces; clear name;
+name1 = 'Data/shrec10/0002.null.0.off';
+name2 = 'Data/shrec10/0002.isometry.1.off';
 
-%%
-%load shape 2
-name = 'Data/shrec10/0003.isometry.2.off';
-shape2.name = name;
-[vertex,faces] = read_off(name);
-vertex = vertex'; faces = faces';
-shape2.vertex = vertex;
-shape2.faces = faces;
-[PHI,E,L,Am] = ALB_spectrum(vertex,faces);
-shape2.phi = PHI;
-shape2.E = E;
-shape2.Am = Am;
-%Compute HKS
-hks = HKS(PHI, E, diag(Am), false);
-shape2.HKS = hks;
-%Compute WKS
-WKS = compute_WKS_from_EV(E,PHI);
-shape2.WKS = WKS;
-clear WKS; clear hks;
-clear PHI; clear E; clear L; clear Am;
-clear vertex; clear faces; clear name;
+shape1 = getShape(name1);
+shape2 = getShape(name2);
 
 %%
 %Compute connected component of shape 1
@@ -53,10 +14,6 @@ C1 = persistance_based_segmentation(shape1,7);
 shape1.connected_component = C1;
 list_label_C1 = union(C1,C1);
 
-% figure(1);
-% options.face_vertex_color = compute_color_from_connected_component(C1, list_label_C1);
-% plot_mesh(shape1.vertex,shape1.faces,options);
-% shading interp; colormap jet(256);
 %%
 %Compute connected component of shape 2
 
@@ -64,17 +21,12 @@ C2 = persistance_based_segmentation(shape2,7);
 shape2.connected_component = C2;
 list_label_C2 = union(C2,C2);
 
-% figure(2);
-% options.face_vertex_color = compute_color_from_connected_component(C2,list_label_C2);
-% plot_mesh(shape2.vertex,shape2.faces,options);
-% shading interp; colormap jet(256);
-
 %%
 %Matching segment bewteen shape1 and shape2
 list_matching = [];
 
-list_descriptors_C1 = compute_descriptors(shape1);
-list_descriptors_C2 = compute_descriptors(shape2);
+list_descriptors_C1 = compute_descriptors_for_matching(shape1);
+list_descriptors_C2 = compute_descriptors_for_matching(shape2);
 
 
 %[~,perm1] = sort(list_descriptors_C1);
@@ -94,7 +46,9 @@ while(i~=min(nb_comp_C1,nb_comp_C2))
     i = i+1;
     [min_per_col,idx_row] = min(err);
     [diff,idx_col] = min(min_per_col);
-    list_matching(i,:) = [ list_label_C1(idx_row(idx_col)) list_label_C2(idx_col) diff ];
+    diff_nb_vertex = abs(sum(C1==list_label_C1(idx_row(idx_col)))-sum(C2==list_label_C2(idx_col)))...
+        /(sum(C1==list_label_C1(idx_row(idx_col)))+sum(C2==list_label_C2(idx_col)));
+    list_matching(i,:) = [ list_label_C1(idx_row(idx_col)) list_label_C2(idx_col) diff diff_nb_vertex ];
     
     % Replace idx_row(idx_col)th row and idx_colth col of err with a high
     % value
@@ -102,25 +56,38 @@ while(i~=min(nb_comp_C1,nb_comp_C2))
     err(:,idx_col) = INFTY;
 end
 
-%Plot mesh with color correspondence to same segment
-figure(1);
-options.face_vertex_color = compute_color_from_connected_component(C1, list_matching(:,1));
-plot_mesh(shape1.vertex,shape1.faces,options);
-shading interp; colormap jet(256);
-
-figure(2);
-options.face_vertex_color = compute_color_from_connected_component(C2, list_matching(:,2));
-plot_mesh(shape2.vertex,shape2.faces,options);
-shading interp; colormap jet(256);
 %%
-% Add constraint to linear system
-a1 = shape1.phi'*shape1.Am*shape1.HKS;
-a2 = shape1.wks_phi'*shape1.WKS;
-a = [a1 a2];
+%Visually check that each segment correspondence is good
+for i = 1:size(list_matching,1)
+    fprintf('Segments matching num %d with err=%f\n',i,list_matching(i,3));
+    figure(1);
+    options.face_vertex_color = compute_color_from_connected_component(C1, list_matching(list_matching(:,1)==list_matching(i,1),1));
+    plot_mesh(shape1.vertex,shape1.faces,options);
+    shading interp; colormap jet(256);
+    
+    figure(2);
+    options.face_vertex_color = compute_color_from_connected_component(C2, list_matching(list_matching(:,2)==list_matching(i,2),2));
+    plot_mesh(shape2.vertex,shape2.faces,options);
+    shading interp; colormap jet(256);
+    fprintf('Press start too check next correspondence\n');
+    pause();
+end
 
-b1 = shape2.phi'*shape2.Am*shape2.HKS;
-b2 = shape2.wks_phi'*shape2.WKS;
-b = [b1 b2];
+%%
+
+nbIndicomp = 1;
+for i = 1:size(list_matching,1)
+    fprintf('Couple %d, C1 : %d C2 : %d\n',i,sum(C1==list_matching(i,1)),sum(C2==list_matching(i,2)));
+    diff_num_vertex = abs(sum(C1==list_matching(i,1))-sum(C2==list_matching(i,2)))/(sum(C1==list_matching(i,1))+sum(C2==list_matching(i,2)));
+    fprintf('diff of nb vertex normalized : %f\n',diff_num_vertex);
+    if( list_matching(i,4) < 0.1 && sum(C1==list_matching(i,1)) > 150)
+        shape1.indicComp(:,i) = 1.*(C1==list_matching(i,1));
+        shape2.indicComp(:,i) = 1.*(C2==list_matching(i,2));
+        nbIndicomp = nbIndicomp +1
+    end
+end
 
 
+%%
+[C] = getFunctionalMap(shape1,shape2);
 

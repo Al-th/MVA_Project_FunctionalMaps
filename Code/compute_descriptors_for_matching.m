@@ -1,4 +1,4 @@
-function list_descriptors_C = compute_descriptors(shape)
+function list_descriptors_C = compute_descriptors_for_matching(shape)
 %UNTITLED5 Summary of this function goes here
 %   Detailed explanation goes here
 C = shape.connected_component;
@@ -12,7 +12,7 @@ e=linspace(log_E(2),(max(log_E))/1.02,size(shape.WKS,2));
 [~,idx] = min(abs(e-5));
 
 for i=1:size(list_label_C,1)
-    list_descriptors_C(i) = sum(shape.WKS(C==list_label_C(i),idx));
+    list_descriptors_C(i) = sum(sum(shape.WKS(C==list_label_C(i))));
 end
 end
 

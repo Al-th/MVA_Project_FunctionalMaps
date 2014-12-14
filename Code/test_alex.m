@@ -21,8 +21,8 @@ list_label_C2 = union(C2,C2);
 
 list_matching = [];
 
-list_descriptors_C1 = compute_descriptors(shape1);
-list_descriptors_C2 = compute_descriptors(shape2);
+list_descriptors_C1 = compute_descriptors_for_matching(shape1);
+list_descriptors_C2 = compute_descriptors_for_matching(shape2);
 
 
 %[~,perm1] = sort(list_descriptors_C1);
