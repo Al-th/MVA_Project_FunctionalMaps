@@ -205,15 +205,17 @@ end
 %%
 
 figure(1)
-fun = shape1.indicCompNOCONSTRAINTS(:,1);
+fun = shape1.indicCompNOCONSTRAINTS(:,2);
 option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
 colormap jet;
 %%
-
+fun12 = shape2.phi*(C*(shape1.phi'*shape1.Am*fun));
+[sortedValues,sortIndex] = sort(fun12(:),'descend');
+%%
 figure(2);
-option2.face_vertex_color = shape2.phi*(C*(shape1.phi'*shape1.Am*fun));
+option2.face_vertex_color = fun12;
 plot_mesh(shape2.vertex, shape2.faces, option2);
 shading interp;
 colormap jet;
