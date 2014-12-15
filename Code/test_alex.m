@@ -3,19 +3,22 @@ clc;
 init;
 
 name1 = 'Data/shrec10/0003.null.0.off';
-name2 = 'Data/shrec10/0003.isometry.3.off';
+name2 = 'Data/shrec10/0003.isometry.4.off';
+%%Avec la 4 c'est top horse
+%%Avec la 5 c'est top horse
+%%Avec la 2 c'est top dog
 
 shape1 = getShape(name1);
 shape2 = getShape(name2);
 
 %%
 
-C1 = persistance_based_segmentation(shape1,5);
+C1 = persistance_based_segmentation(shape1,6);
 shape1.connected_component = C1;
 list_label_C1 = union(C1,C1);
 
 
-C2 = persistance_based_segmentation(shape2,5);
+C2 = persistance_based_segmentation(shape2,6);
 shape2.connected_component = C2;
 list_label_C2 = union(C2,C2);
 
@@ -51,24 +54,23 @@ while(i~=min(nb_comp_C1,nb_comp_C2))
 end
 
 %Plot mesh with color correspondence to same segment
-figure(1);
-options.face_vertex_color = compute_color_from_connected_component(C1, list_matching(:,1));
-plot_mesh(shape1.vertex,shape1.faces,options);
-shading interp; colormap jet(256);
-
-figure(2);
-options.face_vertex_color = compute_color_from_connected_component(C2, list_matching(:,2));
-plot_mesh(shape2.vertex,shape2.faces,options);
-shading interp; colormap jet(256);
+% figure(1);
+% options.face_vertex_color = compute_color_from_connected_component(C1, list_matching(:,1));
+% plot_mesh(shape1.vertex,shape1.faces,options);
+% shading interp; colormap jet(256);
+% 
+% figure(2);
+% options.face_vertex_color = compute_color_from_connected_component(C2, list_matching(:,2));
+% plot_mesh(shape2.vertex,shape2.faces,options);
+% shading interp; colormap jet(256);
 
 %%
 clc
-shape1.indicComp(:,1) = 1.*(C1==1663);
-shape2.indicComp(:,1) = 1.*(C2==9882);
+shape1.indicComp(:,1) = 1.*(C1==19060);
+shape2.indicComp(:,1) = 1.*(C2==4121);
 
-shape1.indicComp(:,2) = 1.*(C1==11369);
-shape2.indicComp(:,2) = 1.*(C2==2388);
-
+shape1.indicComp(:,2) = 1.*(C1==6365);
+shape2.indicComp(:,2) = 1.*(C2==19002);
 
 
 
@@ -203,20 +205,19 @@ end
 %%
 
 figure(1)
-fun = shape1.HKS(:,1);
+fun = shape1.indicCompNOCONSTRAINTS(:,7);
 option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
 colormap jet;
-%%
+
 fun12 = shape2.phi*(C*(shape1.phi'*shape1.Am*fun));
 
-%%
 [sortedValues,sortIndex] = sort(fun12(:),'descend');
 fun12(sortIndex(1:sum(fun))) = 1;
 fun12(sortIndex(sum(fun)+1:end)) =0;
-%%
 
+%%
 figure(2);
 option2.face_vertex_color = fun12;
 plot_mesh(shape2.vertex, shape2.faces, option2);
