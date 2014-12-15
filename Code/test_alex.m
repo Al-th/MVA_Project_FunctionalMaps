@@ -2,8 +2,8 @@ clear;
 clc;
 init;
 
-name1 = 'Data/shrec10/0002.null.0.off';
-name2 = 'Data/shrec10/0002.isometry.2.off';
+name1 = 'Data/shrec10/0003.null.0.off';
+name2 = 'Data/shrec10/0003.isometry.3.off';
 
 shape1 = getShape(name1);
 shape2 = getShape(name2);
@@ -63,15 +63,13 @@ shading interp; colormap jet(256);
 
 %%
 clc
-shape1.indicComp(:,1) = 1.*(C1==6365);
-shape2.indicComp(:,1) = 1.*(C2==19488);
+shape1.indicComp(:,1) = 1.*(C1==1663);
+shape2.indicComp(:,1) = 1.*(C2==9882);
 
-shape1.indicComp(:,2) = 1.*(C1==19060);
-shape2.indicComp(:,2) = 1.*(C2==11743);
+shape1.indicComp(:,2) = 1.*(C1==11369);
+shape2.indicComp(:,2) = 1.*(C2==2388);
 
 
-shape1.indicComp(:,2) = 1.*(C1==25094);
-shape2.indicComp(:,2) = 1.*(C2==3751);
 
 
 
@@ -205,15 +203,20 @@ end
 %%
 
 figure(1)
-fun = shape1.indicCompNOCONSTRAINTS(:,2);
+fun = shape1.HKS(:,1);
 option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
 colormap jet;
 %%
 fun12 = shape2.phi*(C*(shape1.phi'*shape1.Am*fun));
-[sortedValues,sortIndex] = sort(fun12(:),'descend');
+
 %%
+[sortedValues,sortIndex] = sort(fun12(:),'descend');
+fun12(sortIndex(1:sum(fun))) = 1;
+fun12(sortIndex(sum(fun)+1:end)) =0;
+%%
+
 figure(2);
 option2.face_vertex_color = fun12;
 plot_mesh(shape2.vertex, shape2.faces, option2);
