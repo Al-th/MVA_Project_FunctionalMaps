@@ -66,11 +66,8 @@ end
 
 %%
 clc
-shape1.indicComp(:,1) = 1.*(C1==19060);
-shape2.indicComp(:,1) = 1.*(C2==4121);
-
-shape1.indicComp(:,2) = 1.*(C1==6365);
-shape2.indicComp(:,2) = 1.*(C2==19002);
+shape1.indicComp(:,1) = 1.*(C1==11369);
+shape2.indicComp(:,1) = 1.*(C2==15086);
 
 
 
@@ -110,8 +107,8 @@ shape2.tree = kdtree_build(shape2.phi);
 
 %
 clear options
-colors = zeros(25290,1);
-colors(2000:4000,1) = 2;
+colors = zeros(19248,1);
+colors(16000:17000,1) = 2;
 options.face_vertex_color = colors
 plot_mesh(shape1.vertex,shape1.faces,options);
 shading interp; colormap jet(256);
@@ -121,21 +118,45 @@ clear options2;
 
 %%
 figure();
-options2.face_vertex_color = color;
+options2.face_vertex_color = zeros(19248,1);
 plot_mesh(shape2.vertex,shape2.faces,options2);
 colormap jet(256);
 hold on
 
 %%
-for i = 1:2000
+clear v1 v2 v3;
+phi_t = shape2.phi;
+for i = 1:19248
+    tic
+    tree = kdtree_build(phi_t);
+    if(mod(i,100)==0)
+        i
+        size(phi_t);
+    end
+    i
+    size(phi_t)
     p1 = shape1.phi(i,:)';
-    nn = kdtree_k_nearest_neighbors(shape2.tree,C*p1,1);
+    nn = kdtree_k_nearest_neighbors(tree,C*p1,1);
+    phi_t(nn,:) = [];
     v1(i) = shape2.vertex(nn,1);
     v2(i) = shape2.vertex(nn,2);
     v3(i) = shape2.vertex(nn,3);
+    kdtree_delete(tree);
+    toc
+   
 end
 %%
  plot3(v1,v2,v3,'ro');
+
+zax = get(gca,'ZLim');
+axis equal
+set(gca,'Zlim',zax)
+
+%%
+s = 19248
+plot3(shape1.vertex(1:s,1),shape1.vertex(1:s,3),shape1.vertex(1:s,2),'or')
+
+
 
 %%
 %How many eigenfunctions are needed
@@ -225,3 +246,8 @@ shading interp;
 colormap jet;
 
 %%
+fun = shape1.HKS(:,1);
+option.face_vertex_color = fun;
+plot_mesh(shape1.vertex, shape1.faces, option);
+shading interp;
+colormap jet;
