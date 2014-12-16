@@ -82,7 +82,8 @@ end
 
 %%
 [C] = getFunctionalMap(shape1,shape2);
-
+%%
+image(C,'CDataMapping','scaled');
 %%
 HKS2_2 = shape2.phi*(shape2.phi'*shape2.Am*shape2.HKS(:,1));
 HKS1_2 = shape2.phi*C*shape1.phi'*shape1.Am*shape1.HKS(:,1);
