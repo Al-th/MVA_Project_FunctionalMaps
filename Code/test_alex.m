@@ -226,7 +226,7 @@ end
 %%
 
 figure(1)
-fun = shape1.indicCompNOCONSTRAINTS(:,7);
+fun = shape1.indicCompNOCONSTRAINTS(:,3);
 option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
