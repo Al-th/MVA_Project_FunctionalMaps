@@ -1,21 +1,22 @@
 %clear; clc;
 init;
 
-name1 = 'Data/shrec10/0002.null.0.off';
-name2 = 'Data/shrec10/0002.isometry.1.off';
+name1 = 'Data/shrec10/0003.null.0.off';
+name2 = 'Data/shrec10/0003.isometry.2.off';
 
 shape1 = getShape(name1);
 shape2 = getShape(name2);
 
 %%
-%Compute connected component of shape 1
+options.face_vertex_color = zeros(size(shape2.vertex,1),1);
+plot_mesh(shape2.vertex,shape2.faces,options);
+
+%%
+%Compute connected component of shape 1 & 2
 
 C1 = persistance_based_segmentation(shape1,7);
 shape1.connected_component = C1;
 list_label_C1 = union(C1,C1);
-
-%%
-%Compute connected component of shape 2
 
 C2 = persistance_based_segmentation(shape2,7);
 shape2.connected_component = C2;
@@ -24,6 +25,18 @@ list_label_C2 = union(C2,C2);
 %%
 %Matching segment bewteen shape1 and shape2
 list_matching = getSegmentMatching(shape1,shape2);
+
+figure(1);
+options.face_vertex_color = compute_color_from_connected_component(C1, list_label_C1);
+plot_mesh(shape1.vertex,shape1.faces,options);
+shading interp; colormap jet(256);
+
+
+figure(2);
+options.face_vertex_color = compute_color_from_connected_component(C2, list_label_C2);
+plot_mesh(shape2.vertex,shape2.faces,options);
+shading interp; colormap jet(256);
+
 
 %%
 %Visually check that each segment correspondence is good
