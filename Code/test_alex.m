@@ -306,20 +306,23 @@ shape2.fun = [shape2.fun_segment, shape2.HKS, shape2.WKS];
 
 
 disp('Computing C');
-
 C = calcCFromFuncs(shape1.fun,shape2.fun,shape1.phi,shape2.phi,shape1.L,shape2.L);
 disp('Done');
-%Create functions to use
-
-%%
+disp('Refining C');
+refinedC = refinementC(C,shape1,shape2,30);
+disp('Refinement done');
+disp('Computing point to point');
 searchIndexParams = struct();
-shape2toshape1 = flann_search(shape1.phi', C'*shape2.phi', 1, searchIndexParams);
+shape2toShape1 = flann_search(shape1.phi', refinedC'*shape2.phi', 1, searchIndexParams);
+disp('Done computing point to point');
 
-%%
-plot_mesh(shape1.vertex,shape1.faces);
-for i = 1:19248
-    hold on
-    plot3([shape1.vertex(shape2toshape1(i),1),shape1.vertex(gt4(i),1)],[shape1.vertex(shape2toshape1(i),2) shape1.vertex(gt4(i),2)],[shape1.vertex(shape2toshape1(i),3) shape1.vertex(gt4(i),3)],'r');
-    hold off
-   
-end
+subplot(1,2,1);
+options.face_vertex_color = shape1.vertex(shape2toShape1,1);
+plot_mesh(shape2.vertex,shape2.faces,options);
+subplot(1,2,2);
+options2.face_vertex_color = shape2.vertex(:,1);
+plot_mesh(shape2.vertex,shape2.faces,options2);
+
+shading interp;
+colormap jet;
+
