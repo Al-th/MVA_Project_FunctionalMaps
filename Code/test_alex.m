@@ -3,7 +3,7 @@ clc;
 init;
 
 name1 = 'Data/shrec10/0003.null.0.off';
-name2 = 'Data/shrec10/0003.isometry.4.off';
+name2 = 'Data/shrec10/0003.isometry.1.off';
 %%Avec la 4 c'est top horse
 %%Avec la 5 c'est top horse
 %%Avec la 2 c'est top dog
@@ -260,17 +260,18 @@ colormap jet;
 %11369
 %4833
 
-gt4 = load('Data\shrec10gt\0003.isometry.4.labels');
+gt = load('Data\shrec10gt\0003.isometry.1.labels');
+disp('DO NOT FORGET TO CHANGE GT PATH');
 
 shape1.parts = [];
 shape2.parts = [];
 
 shape1.parts = [shape1.parts 1.*(C1==15346)];
-shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==15346),gt4)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==15346),gt)];
 shape1.parts = [shape1.parts 1.*(C1==11369)];
-shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==11369),gt4)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==11369),gt)];
 shape1.parts = [shape1.parts 1.*(C1==4833)];
-shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==4833),gt4)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==4833),gt)];
 
 
 
@@ -288,11 +289,33 @@ clear shape2.fun_segment;
 shape1.fun_segment = [];
 shape2.fun_segment = [];
 
+W = zeros(1608,1);
+weightWKS = 1;
+weightHKS = 1;
+weightSegment = 1;
+weightWKSComm = 1;
+weightHKSComm = 1;
+weightSegmentComm = 1;
+
+j=1;
 for i = 1:size(shape1.WKS,2)
     shape1.fun_segment = [shape1.fun_segment repmat(shape1.WKS(:,i),1,size(shape1.parts,2)) .* shape1.parts];
+    for k = 1:size(shape1.parts,2)
+        W(j) = weightSegment;
+        j = j+1; 
+        W(j) = weightSegmentComm;
+        j= j+1;
+    end
+    
 end
 for i = 1:size(shape1.HKS,2)
     shape1.fun_segment = [shape1.fun_segment repmat(shape1.HKS(:,i),1,size(shape1.parts,2)) .* shape1.parts];
+    for k = 1:size(shape1.parts,2)
+        W(j) = weightSegment;
+        j = j+1; 
+        W(j) = weightSegmentComm;
+        j= j+1;
+    end
 end
 for i = 1:size(shape2.WKS,2)
     shape2.fun_segment = [shape2.fun_segment repmat(shape2.WKS(:,i),1,size(shape2.parts,2)) .* shape2.parts];
@@ -301,27 +324,66 @@ for i = 1:size(shape2.HKS,2)
     shape2.fun_segment = [shape2.fun_segment repmat(shape2.HKS(:,i),1,size(shape2.parts,2)) .* shape2.parts];
 end
 
+for i = 1:size(shape1.HKS,2)
+    W(j) = weightHKS;
+    j = j+1;
+    W(j) = weightHKSComm;
+    j=j+1;
+end
+
+for i = 1:size(shape1.WKS,2)
+    W(j) = weightWKS;
+    j = j+1;
+    W(j) = weightWKSComm;
+    j=j+1;
+end
+
+
 shape1.fun = [shape1.fun_segment, shape1.HKS, shape1.WKS];
 shape2.fun = [shape2.fun_segment, shape2.HKS, shape2.WKS];
-
+%%
 
 disp('Computing C');
-C = calcCFromFuncs(shape1.fun,shape2.fun,shape1.phi,shape2.phi,shape1.L,shape2.L);
+C = calcCFromFuncsWeighted(shape1.fun,shape2.fun,diag(W),shape1.phi,shape2.phi,shape1.L,shape2.L);
 disp('Done');
 disp('Refining C');
 refinedC = refinementC(C,shape1,shape2,30);
 disp('Refinement done');
 disp('Computing point to point');
+
+
 searchIndexParams = struct();
 shape2toShape1 = flann_search(shape1.phi', refinedC'*shape2.phi', 1, searchIndexParams);
 disp('Done computing point to point');
 
+%%
 subplot(1,2,1);
-options.face_vertex_color = shape1.vertex(shape2toShape1,1);
+options.face_vertex_color = shape1.vertex(shape2toShape1,2);
 plot_mesh(shape2.vertex,shape2.faces,options);
 subplot(1,2,2);
-options2.face_vertex_color = shape2.vertex(:,1);
-plot_mesh(shape2.vertex,shape2.faces,options2);
+options2.face_vertex_color = shape1.vertex(:,2);
+plot_mesh(shape1.vertex,shape1.faces,options2);
+
+shading interp;
+colormap jet;
+
+%%
+
+pointToHighlight = 15000;
+fun = zeros(19248,1);
+sigma = 10;
+[D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,pointToHighlight);
+
+%%
+
+
+subplot(1,2,1);
+options.face_vertex_color = D(shape2toShape1);
+plot_mesh(shape2.vertex,shape2.faces,options);
+subplot(1,2,2);
+options2.face_vertex_color = D;
+plot_mesh(shape1.vertex,shape1.faces,options2);
+
 
 shading interp;
 colormap jet;

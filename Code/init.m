@@ -12,3 +12,5 @@ path(path, 'kdtree');
 path(path, 'ShapeLAB-master/ShapeLAB-master');
 path(path, 'ShapeLAB-master/ShapeLAB-master/psc');
 path(path, 'ShapeLAB-master/ShapeLAB-master/utils');
+path(path, 'toolbox_fast_marching/');
+path(path, 'toolbox_fast_marching/toolbox/');
