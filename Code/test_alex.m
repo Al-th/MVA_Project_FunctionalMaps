@@ -13,12 +13,12 @@ shape2 = getShape(name2);
 
 %%
 
-C1 = persistance_based_segmentation(shape1,6);
+C1 = persistance_based_segmentation(shape1,7);
 shape1.connected_component = C1;
 list_label_C1 = union(C1,C1);
 
 
-C2 = persistance_based_segmentation(shape2,6);
+C2 = persistance_based_segmentation(shape2,7);
 shape2.connected_component = C2;
 list_label_C2 = union(C2,C2);
 
@@ -227,7 +227,7 @@ end
 %%
 
 figure(1)
-fun = shape1.indicCompNOCONSTRAINTS(:,3);
+fun = shape1.indicCompNOCONSTRAINTS(:,7);
 option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
@@ -252,3 +252,74 @@ option.face_vertex_color = fun;
 plot_mesh(shape1.vertex, shape1.faces, option);
 shading interp;
 colormap jet;
+
+%%
+% Test corresponding segment
+
+%15346
+%11369
+%4833
+
+gt4 = load('Data\shrec10gt\0003.isometry.4.labels');
+
+shape1.parts = [];
+shape2.parts = [];
+
+shape1.parts = [shape1.parts 1.*(C1==15346)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==15346),gt4)];
+shape1.parts = [shape1.parts 1.*(C1==11369)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==11369),gt4)];
+shape1.parts = [shape1.parts 1.*(C1==4833)];
+shape2.parts = [shape2.parts getAssociatedSegmentFromNull(1.*(C1==4833),gt4)];
+
+
+
+% figure();
+% subplot(1,2,1);
+% options1.face_vertex_color = segmentNull;
+% plot_mesh(shape1.vertex,shape1.faces,options1);
+% subplot(1,2,2);
+% options2.face_vertex_color = segment4;
+% plot_mesh(shape2.vertex,shape2.faces,options2);
+
+clear shape1.fun_segment;
+clear shape2.fun_segment;
+
+shape1.fun_segment = [];
+shape2.fun_segment = [];
+
+for i = 1:size(shape1.WKS,2)
+    shape1.fun_segment = [shape1.fun_segment repmat(shape1.WKS(:,i),1,size(shape1.parts,2)) .* shape1.parts];
+end
+for i = 1:size(shape1.HKS,2)
+    shape1.fun_segment = [shape1.fun_segment repmat(shape1.HKS(:,i),1,size(shape1.parts,2)) .* shape1.parts];
+end
+for i = 1:size(shape2.WKS,2)
+    shape2.fun_segment = [shape2.fun_segment repmat(shape2.WKS(:,i),1,size(shape2.parts,2)) .* shape2.parts];
+end
+for i = 1:size(shape2.HKS,2)
+    shape2.fun_segment = [shape2.fun_segment repmat(shape2.HKS(:,i),1,size(shape2.parts,2)) .* shape2.parts];
+end
+
+shape1.fun = [shape1.fun_segment, shape1.HKS, shape1.WKS];
+shape2.fun = [shape2.fun_segment, shape2.HKS, shape2.WKS];
+
+
+disp('Computing C');
+
+C = calcCFromFuncs(shape1.fun,shape2.fun,shape1.phi,shape2.phi,shape1.L,shape2.L);
+disp('Done');
+%Create functions to use
+
+%%
+searchIndexParams = struct();
+shape2toshape1 = flann_search(shape1.phi', C'*shape2.phi', 1, searchIndexParams);
+
+%%
+plot_mesh(shape1.vertex,shape1.faces);
+for i = 1:19248
+    hold on
+    plot3([shape1.vertex(shape2toshape1(i),1),shape1.vertex(gt4(i),1)],[shape1.vertex(shape2toshape1(i),2) shape1.vertex(gt4(i),2)],[shape1.vertex(shape2toshape1(i),3) shape1.vertex(gt4(i),3)],'r');
+    hold off
+   
+end
