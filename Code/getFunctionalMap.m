@@ -4,13 +4,13 @@ function [C] = getFunctionalMap(shape1,shape2)
     A = [];
     b = [];
     
-%     %Adding phi constraints
-%     for i = 1:size(shape1.phi,2)
-%        [dA,db] = computeDescriptorConstraints(shape1.phi(:,i),shape1, shape2.phi(:,i),shape2);
-%         A = sparse([A ; dA]);
-%         b = sparse([b ; db]);
-%     end
-%     
+    %Adding phi constraints
+    for i = 1:size(shape1.phi,2)
+       [dA,db] = computeDescriptorConstraints(shape1.phi(:,i),shape1, shape2.phi(:,i),shape2);
+        A = sparse([A ; dA]);
+        b = sparse([b ; db]);
+    end
+    
 
     
     tic

@@ -3,7 +3,8 @@ clc;
 init;
 
 name1 = 'Data/shrec10/0003.null.0.off';
-name2 = 'Data/shrec10/0003.isometry.1.off';
+name2 = 'Data/shrec10/0003.isometry.5.off';
+gt = load('Data\shrec10gt\0003.isometry.5.labels');
 %%Avec la 4 c'est top horse
 %%Avec la 5 c'est top horse
 %%Avec la 2 c'est top dog
@@ -260,7 +261,7 @@ colormap jet;
 %11369
 %4833
 
-gt = load('Data\shrec10gt\0003.isometry.1.labels');
+
 disp('DO NOT FORGET TO CHANGE GT PATH');
 
 shape1.parts = [];
@@ -354,6 +355,7 @@ disp('Computing point to point');
 
 searchIndexParams = struct();
 shape2toShape1 = flann_search(shape1.phi', refinedC'*shape2.phi', 1, searchIndexParams);
+shape1toShape2 = flann_search(shape2.phi',C*shape1.phi',1,searchIndexParams);
 disp('Done computing point to point');
 
 %%
@@ -388,3 +390,60 @@ plot_mesh(shape1.vertex,shape1.faces,options2);
 shading interp;
 colormap jet;
 
+%%
+
+
+geoError = zeros(19248,1);
+
+%%
+tic
+for i = 1:19248
+    options.end_points = shape2toShape1(i);
+    [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,gt(i),options);
+    err = D(shape2toShape1(i));
+    geoError(i) = err;
+    fprintf('%d \r', i/19248);
+end
+toc
+
+%%
+geoError2 = geoError;
+for j = 0:0.01:40
+   ind = int32(1 + j*100)
+   pts(ind) = sum(geoError2<j);
+end
+plot(linspace(0,40,4001),pts/size(geoError,1))
+
+
+%% 1 ALEX
+%WKS 
+%HKS
+%SEGMENT
+%WKS + HKS
+%WKS + SEGMENT
+%HKS + SEGMENT
+%WKS + HKS + SEGMENT
+% 0.5 WKS + 0.5 HKS + 1 SEGMENT
+% 1/6 WKS + 1/6 HKS + 2/3 Segment
+
+%% 2 NICO
+%WKS + HKS + SEGMENT
+%WKS + HKS + SEGMENT + REFINEMENT
+%WKS + HKS + SEGMENT + REFINEMENT (N fois)
+
+%% 3 NICO
+%Landmark : TETE VERS QUEUE
+
+%% 4 ALEX
+%WKS + HKS + SEGMENT + REFINEMENT
+% à différents alpha de ALB
+
+%% 5 NICO 
+%BEST OF 1, retirer commutativity
+
+%% FOR ALL
+% Graph de geodesic error *.mat file
+% Images
+% (+zoom intéressants)
+% CHEVAL PAS GENTIL 1
+% CHEVAL GENTIL 5
