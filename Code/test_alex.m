@@ -371,7 +371,7 @@ colormap jet;
 
 %%
 
-pointToHighlight = 15000;
+pointToHighlight = 5853;
 fun = zeros(19248,1);
 sigma = 10;
 [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,pointToHighlight);
@@ -444,5 +444,28 @@ plot(linspace(0,40,4001),pts/size(geoError,1))
 % CHEVAL PAS GENTIL 1
 % CHEVAL GENTIL 5
 
+%%MAX : 383;
+%%
+
 script_weights_alex
 script_alb_alex
+
+%%
+[D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,shape1.vertex(1000,:));
+   
+%%
+%% Sample to determine maximum geodesic distance between two points of the sape
+maxM = 0;
+listMax = [0];
+for i = randperm(19248)
+    [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,i);
+    m = max(D);
+    if(m > maxM)
+        diff = m-maxM
+        maxM = m
+        listMax = [listMax m];
+        plot(listMax);
+        pause(0.01);
+    end
+    
+end
