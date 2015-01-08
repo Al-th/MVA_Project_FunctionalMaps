@@ -312,20 +312,20 @@ for iter = 1:numel(withRefinement)
     % sigma = 10;
     % [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,pointToHighlight);
     
-    %
-    %
-    %     geoError = zeros(19248,1);
-    %     disp('Performing geodesic error');
-    %     tic
-    %     for i = 1:19248
-    %         options.end_points = shape2toShape1(i);
-    %         [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,gt(i),options);
-    %         err = D(shape2toShape1(i));
-    %         geoError(i) = err;
-    %         fprintf('%d \r', i/19248);
-    %     end
-    %     toc
-    %     %%
-    %     filename = strcat('./test/2_Refinement/geo_error.',mesh_name,'.mat');
-    %     save(filename,'geoError');
+    
+    
+    geoError = zeros(19248,1);
+    disp('Performing geodesic error');
+    tic
+    for i = 1:19248
+        options.end_points = shape2toShape1(i);
+        [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,gt(i),options);
+        err = D(shape2toShape1(i));
+        geoError(i) = err;
+        fprintf('%d \r', i/19248);
+    end
+    toc
+    %%
+    filename = strcat('./test/2_Refinement/geo_error.',mesh_name,'.mat');
+    save(filename,'geoError');
 end
