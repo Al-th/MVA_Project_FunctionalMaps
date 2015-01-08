@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.12.10)  8 JAN 2015 14:30
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.12.10)  8 JAN 2015 18:09
 entering extended mode
 **main.tex
 
@@ -363,37 +363,103 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
 
-No file main.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 79.
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+
+ []
+
+
+Underfull \hbox (badness 1173) in paragraph at lines 72--73
+\OT1/ptm/m/n/10 con-straints, land-mark preser-va-tion con-straints, seg-ment
+ []
+
+
+Underfull \hbox (badness 6995) in paragraph at lines 72--73
+\OT1/ptm/m/n/10 preser-va-tion con-straints, and op-er-a-tor com-mu-ta-tiv-ity
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--73
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 2662) in paragraph at lines 74--75
+\OT1/ptm/m/n/10 preser-va-tion con-straints are spe-cial cases of func-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
+
+ []
+
 [1{C:/Users/athis/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
-
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 79.
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
+
+ []
+
+<Images/weights.png, id=24, 774.64406pt x 524.71031pt>
+File: Images/weights.png Graphic file (type png)
+
+<use Images/weights.png>
+Package pdftex.def Info: Images/weights.png used on input line 104.
+(pdftex.def)             Requested size: 198.73946pt x 134.612pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+No file main.bbl.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 133.
+[2 <E:/Fichiers/Work/ENS 2014-2015/Obj Reco/MVA_ObjectRecognitionProject/Report
+/Final report/Images/weights.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 133.
 
 ("E:\Fichiers\Work\ENS 2014-2015\Obj Reco\MVA_ObjectRecognitionProject\Report\F
 inal report\main.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 79.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 79.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 79.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 133.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 133.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 133.
  ) 
 Here is how much of TeX's memory you used:
- 6023 strings out of 494045
- 86788 string characters out of 3146774
- 162583 words of memory out of 3000000
- 9237 multiletter control sequences out of 15000+200000
- 19827 words of font info for 50 fonts, out of 3000000 for 9000
+ 6053 strings out of 494045
+ 87136 string characters out of 3146774
+ 169583 words of memory out of 3000000
+ 9251 multiletter control sequences out of 15000+200000
+ 24847 words of font info for 61 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 34i,9n,24p,252b,320s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 34i,9n,24p,940b,320s stack positions out of 5000i,500n,10000p,200000b,50000s
 {E:/Systeme/Program Files/MikTex/fonts/enc/dvips/fontname/8r.enc}<E:/Systeme/
-Program Files/MikTex/fonts/type1/urw/courier/ucrr8a.pfb><E:/Systeme/Program Fil
-es/MikTex/fonts/type1/urw/times/utmb8a.pfb><E:/Systeme/Program Files/MikTex/fon
-ts/type1/urw/times/utmbi8a.pfb><E:/Systeme/Program Files/MikTex/fonts/type1/urw
-/times/utmr8a.pfb>
-Output written on main.pdf (1 page, 48124 bytes).
+Program Files/MikTex/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Systeme/Prog
+ram Files/MikTex/fonts/type1/public/amsfonts/cm/cmmi7.pfb><E:/Systeme/Program F
+iles/MikTex/fonts/type1/public/amsfonts/cm/cmr10.pfb><E:/Systeme/Program Files/
+MikTex/fonts/type1/public/amsfonts/cm/cmr7.pfb><E:/Systeme/Program Files/MikTex
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb><E:/Systeme/Program Files/MikTex/fon
+ts/type1/public/amsfonts/cm/cmsy7.pfb><E:/Systeme/Program Files/MikTex/fonts/ty
+pe1/urw/courier/ucrr8a.pfb><E:/Systeme/Program Files/MikTex/fonts/type1/urw/tim
+es/utmb8a.pfb><E:/Systeme/Program Files/MikTex/fonts/type1/urw/times/utmbi8a.pf
+b><E:/Systeme/Program Files/MikTex/fonts/type1/urw/times/utmr8a.pfb><E:/Systeme
+/Program Files/MikTex/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (2 pages, 142633 bytes).
 PDF statistics:
- 36 PDF objects out of 1000 (max. 8388607)
- 8 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 79 PDF objects out of 1000 (max. 8388607)
+ 16 named destinations out of 1000 (max. 500000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

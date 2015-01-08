@@ -375,7 +375,6 @@ pointToHighlight = 5853;
 fun = zeros(19248,1);
 sigma = 10;
 [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,pointToHighlight);
-
 %%
 
 
@@ -469,3 +468,9 @@ for i = randperm(19248)
     end
     
 end
+
+%%
+
+plot_mesh(shape1.vertex,shape1.faces);
+hold on
+plot3(shape1.vertex(1:19248,1),shape1.vertex(1:19248,2),shape1.vertex(1:19248,3),'ro');
