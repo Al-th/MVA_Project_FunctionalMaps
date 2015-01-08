@@ -395,8 +395,6 @@ colormap jet;
 
 geoError = zeros(19248,1);
 
-%%
-tic
 for i = 1:19248
     options.end_points = shape2toShape1(i);
     [D,S,Q] = perform_fast_marching_mesh(shape1.vertex,shape1.faces,gt(i),options);
@@ -404,9 +402,7 @@ for i = 1:19248
     geoError(i) = err;
     fprintf('%d \r', i/19248);
 end
-toc
 
-%%
 geoError2 = geoError;
 for j = 0:0.01:40
    ind = int32(1 + j*100)
@@ -447,3 +443,6 @@ plot(linspace(0,40,4001),pts/size(geoError,1))
 % (+zoom intéressants)
 % CHEVAL PAS GENTIL 1
 % CHEVAL GENTIL 5
+
+script_weights_alex
+script_alb_alex
