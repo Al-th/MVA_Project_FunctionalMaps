@@ -81,7 +81,7 @@ Many natural constraints on the map $T$ become linear constraints in its functio
 \begin{description}
 \item[Descriptor preservation] If $f$ and $g$ are point descriptors then they are approximately preserved by the mapping. We can phrase one linear constraint $Ca=b$ for each dimension of the descriptor.
 \item[Landmark point and Segment correspondences] If we are given landmark point correspondences or correspondences between parts of shapes, we simply consider functions $f$ and $g$ that are describing those landmark points or parts of shapes and then phrase linear constraint $Ca=b$ for each correspondences.
-\item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensured by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $||R_FC-CS_F||=0$ where $R_F$ and $S_F$ are Laplace-Beltrami operators on $M$ and $N$.
+\item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensured by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $|L_2C-CL_1||=0$ where $L_1$ and $L_2$ are Laplace-Beltrami operators on $M$ and $N$.
 \end{description}
 
 After finding the matrix $C$ that best satifies the constraints, a point-to-point conversion is made to recover the map $T$.
