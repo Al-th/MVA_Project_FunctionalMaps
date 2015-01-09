@@ -145,7 +145,7 @@ Finally we tested the impact of removing the Operator Commutativity constraints 
  
 
 \section{Discussions} %NICO/ALEX
-We studied the method described in \cite{ovs}. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40x40$, and this was sufficient enough to get very good results). One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
+We studied the method described in \cite{ovs}. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40\times40$, and this was sufficient enough to get very good results). One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
 
 \begin{figure}[h]
 \centering
@@ -169,7 +169,7 @@ We studied the method described in \cite{ovs}. that proposes a new representatio
 \setlength\itemsep{0.01em}
 \item{Our implementation : \url{https://github.com/Al-th/MVA_ObjectRecognitionProject}}
 \item{LB Operator, WKS, HKS : Mathieu Aubry}
-\item{Geodesic distance calculation : Gabriel Peyré}
+\item{Geodesic distance calculation : Gabriel Peyre}
 \item{Kd-tree : Marius Muja and David G. Lowe}
 \item{Inspiration for ICP : \url{https://github.com/jonathanpokrass/ShapeLAB}}
 \end{itemize}
