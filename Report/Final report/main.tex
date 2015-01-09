@@ -64,7 +64,23 @@ Several paper try to avoid doing this by using different methods that are trying
 \section{Method} %NICO
 %Description de la fonctional map
 Instead of putting in correspondence points on the shapes, Ovsjanikov \& al propose to consider mapping between functions defined on the shapes. 
-Let $T : M \rightarrow N$ be a bijective mapping between manifolds $M$ and $N$. Given a scalar function $f: M \rightarrow \mathbb{R}$, we obtain the corresponding function $g : N \rightarrow \mathbb{R}$ by composition, $g=f \circ T^{-1}$. This induced transformation, $T_F : \mathcal{F}(M,\mathbb{R})\rightarrow \mathcal{F}(N,\mathbb{R})$ where $\mathcal{F}(\dot,\mathbb{R})$ denote a generic space of real-valued function, is the functional representation of the mapping $T$. 
+Let $T : M \rightarrow N$ be a bijective mapping between manifolds $M$ and $N$. Given a scalar function $f: M \rightarrow \mathbb{R}$, we obtain the corresponding function $g : N \rightarrow \mathbb{R}$ by composition, $g=f \circ T^{-1}$. This induced transformation, $T_F : \mathcal{F}(M,\mathbb{R})\rightarrow \mathcal{F}(N,\mathbb{R})$ where $\mathcal{F}(\dot,\mathbb{R})$ denote a generic space of real-valued function, is called the functional representation of the mapping $T$. 
+If $\mathcal{F}(M,\mathbb{R})$ and $\mathcal{F}(N,\mathbb{R})$ has a Basis \{$\phi_i^M$\} and \{$\phi_j^N$\}, then any function $f$ on $M$ and $g$ on $N$ can be represented as a vector $a=(a_i)_{i \in \mathbb{N}}$ and $b=(b_j)_{i \in \mathbb{N}}$, s.t.
+\begin{equation}
+	f = \sum_{i=1}^{\infty}a_i \phi_i^M  \quad \quad g = \sum_{j=1}^{\infty}b_j \phi_j^N
+\end{equation}
+It follows the map $T_F$ can be represented as a (possibly infinite) matrix $C$ where $C_{i,j}=<T_F(\phi_i^M),\phi_j^N>$ and we can write $T_F(f)=Ca=b=g$.
+
+Then the goal is to first recover $C$ and then calculate $T$.
+
+\paragraph{Choice of basis}
+Ovsjanikov \& al  use the first $n$ Laplace-Beltrami eigenfunctions as the basis for their functional representation (\{$\phi_i^M$\} and \{$\phi_j^N$\}). This basis is compact and stable which allow us to consider a finite submatrix $C_{0..n \times 0..n}$ given a more compact representation of the map $T_F$. 
+
+\paragraph{Recover matrix C} 
+Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are the representation of correspondences
+
+
+
 
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
