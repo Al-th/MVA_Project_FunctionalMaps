@@ -90,7 +90,7 @@ After finding the matrix $C$ that best satifies the constraints, a point-to-poin
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
 %Description de comment compute les constraints
 \subsubsection*{Segmention} %NICO
-In order to add segment correspondences constraints to the linear system, we implemented the persistence-based segmentation technique of Skraba et al to obtain parts of both shapes and then manually find pair of parts between the 2 shapes.
+In order to add segment correspondences constraints to the linear system, we implemented the persistence-based segmentation technique of \cite{Skraba} to obtain parts of both shapes and then manually find pair of parts between the 2 shapes.
 %TODO add ref for Skraba et al
 \subsubsection*{Constraints} %ALEX
 In order to solve the linear system, one has to compute all the previously stated constraints (function preservation constraints, landmark preservation constraints, segment preservation constraints, and operator commutativity constraints). 
