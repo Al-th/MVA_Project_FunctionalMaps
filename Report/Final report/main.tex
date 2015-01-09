@@ -74,14 +74,14 @@ Then the goal is to first recover $C$ and then calculate $T$.
 
 \paragraph{Choice of basis}
 
-Ovsjanikov et al. use the first $n$ Laplace-Beltrami eigenfunctions as the basis for their functional representation (\{$\phi_i^M$\} and \{$\phi_j^N$\}). This basis is compact and stable which allow us to consider a finite submatrix $C_{0..n \times 0..n}$ given a more compact representation of the map $T_F$. 
+Ovsjanikov et al. use the first $n$ Laplace-Beltrami eigenfunctions as the basis for their functional representation (\{$\phi_i^M$\} and \{$\phi_j^N$\}). This basis is compact and stable which allow us to consider a finite submatrix $C_{0..n \times 0..n}$ given a more compact representation of the map $T_F$. Moreover, the Laplace-Beltrami eigenfunctions are scale aware therefore satisfying the need of a multi-scale representation.
 
 \paragraph{Recover matrix C} 
-Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are the representation of corresponding functions $f$ and $g$. The differents constraints proposed by the authors are : 
+Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are representation of corresponding functions $f$ and $g$. The differents constraints proposed by the authors are : 
 \begin{description}
 \item[Descriptor preservation] If $f$ and $g$ are point descriptors then they are approximately preserved by the mapping. We can phrase one linear constraint $Ca=b$ for each dimension of the descriptor.
-\item[Landmark point and Segment correspondences] If we are given landmark point correspondences or correspondences between parts of shapes, we simply considere functions $f$ and $g$ that are normally distributed functions around landmark points or parts of shapes and then phrase linear constraint $Ca=b$ for each correspondences.
-\item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensure by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $||R_FC-CS_F||=0$ where $R_F$ and $S_F$ are Laplace-Beltrami operators on $M$ and $N$.
+\item[Landmark point and Segment correspondences] If we are given landmark point correspondences or correspondences between parts of shapes, we simply consider functions $f$ and $g$ that are describing those landmark points or parts of shapes and then phrase linear constraint $Ca=b$ for each correspondences.
+\item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensured by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $||R_FC-CS_F||=0$ where $R_F$ and $S_F$ are Laplace-Beltrami operators on $M$ and $N$.
 \end{description}
 
 After finding the matrix $C$ that best satifies the constraints, a point-to-point conversion is made to recover the map $T$.
@@ -147,6 +147,23 @@ Finally we tested the impact of removing the Operator Commutativity constraints 
 
 \section{Discussions} %NICO/ALEX
 We studied the method described in \cite{ovs}. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40x40$, and this was sufficient enough to get very good results). One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.4\textwidth]{Images/full-constraints-iso1-3segments-horse.png}
+\caption{Function transfer}
+\label{refinement}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.4\textwidth]{Images/pointTransfer.png}
+\caption{Point transfer}
+\label{refinement}
+\end{figure}
+
+
+
 
 \section*{Sources and Copyrights}
 \begin{itemize}
