@@ -89,7 +89,6 @@ After finding the matrix $C$ that best satifies the constraints, a point-to-poin
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
 %Description de comment compute les constraints
-\subsection{Laplace Beltrami Operator}
 \subsubsection*{Segmention} %NICO
 In order to add segment correspondences constraints to the linear system, we implemented the persistence-based segmentation technique of Skraba et al to obtain parts of both shapes and then manually find pair of parts between the 2 shapes.
 %TODO add ref for Skraba et al
@@ -169,7 +168,7 @@ We studied the method described in \cite{ovs}. that proposes a new representatio
 \begin{itemize}
 \setlength\itemsep{0.01em}
 \item{Our implementation : \url{https://github.com/Al-th/MVA_ObjectRecognitionProject}}
-\item{Laplace Beltrami Operator, WKS, HKS : Mathieu Aubry}
+\item{LB Operator, WKS, HKS : Mathieu Aubry}
 \item{Geodesic distance calculation : Gabriel Peyré}
 \item{Kd-tree : Marius Muja and David G. Lowe}
 \item{Inspiration for ICP : \url{https://github.com/jonathanpokrass/ShapeLAB}}
