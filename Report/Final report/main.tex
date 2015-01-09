@@ -68,21 +68,29 @@ If $\mathcal{F}(M,\mathbb{R})$ and $\mathcal{F}(N,\mathbb{R})$ has a Basis \{$\p
 \begin{equation}
 	f = \sum_{i=1}^{\infty}a_i \phi_i^M  \quad \quad g = \sum_{j=1}^{\infty}b_j \phi_j^N
 \end{equation}
-It follows the map $T_F$ can be represented as a (possibly infinite) matrix $C$ where $C_{i,j}=<T_F(\phi_i^M),\phi_j^N>$ and we can write $T_F(f)=Ca=b=g$.
+It follows the map $T_F$ can be represented as a (possibly infinite) matrix $C$ where $C_{i,j}=<T_F(\phi_i^M),\phi_j^N>$ and we can write $Ca=b$.
 
 Then the goal is to first recover $C$ and then calculate $T$.
 
 \paragraph{Choice of basis}
 Ovsjanikov \& al  use the first $n$ Laplace-Beltrami eigenfunctions as the basis for their functional representation (\{$\phi_i^M$\} and \{$\phi_j^N$\}). This basis is compact and stable which allow us to consider a finite submatrix $C_{0..n \times 0..n}$ given a more compact representation of the map $T_F$. 
-
 \paragraph{Recover matrix C} 
-Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are the representation of correspondences
+Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are the representation of corresponding functions $f$ and $g$. The differents constraints proposed by the authors are : 
+\begin{description}
+\item[Descriptor preservation] If $f$ and $g$ are point descriptors then they are approximately preserved by the mapping. We can phrase one linear constraint $Ca=b$ for each dimension of the descriptor.
+\item[Landmark point and Segment correspondences] If we are given landmark point correspondences or correspondences between parts of shapes, we simply considere functions $f$ and $g$ that are normally distributed functions around landmark points or parts of shapes and then phrase linear constraint $Ca=b$ for each correspondences.
+\item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensure by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $||R_FC-CS_F||=0$ where $R_F$ and $S_F$ are Laplace-Beltrami operators on $M$ and $N$.
+\end{description}
+
+After finding the matrix $C$ that best satifies the constraints, to recover a point-to-point conversion is made to obtain the map $T$.
 
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
 %Description de comment compute les constraints
 \subsection{Laplace Beltrami Operator}
 \subsubsection*{Segmention} %NICO
+In order to add segment correspondences constraints to the linear system, we implemented the persistence-based segmentation technique of Skraba et al to obtain parts of both shapes and then manually find pair of parts between the 2 shapes.
+%TODO add ref for Skraba et al
 \subsubsection*{Constraints} %ALEX
 In order to solve the linear system, one has to compute all the previously stated constraints (function preservation constraints, landmark preservation constraints, segment preservation constraints, and operator commutativity constraints). \\
 
