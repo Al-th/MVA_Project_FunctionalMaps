@@ -20,8 +20,8 @@ name2 = strcat('Data/shrec10/',mesh_name,'.off');
 gt_name = strcat('Data\shrec10gt\',mesh_name,'.labels');
 gt = load(gt_name);
 
-withRefinement = ones((10+1),1);
-withRefinement(11) = 0; %11eme run sans refinement
+withRefinement = 0; %ones((10+1),1);
+%withRefinement(11) = 0; %11eme run sans refinement
 
 %%
 for iter = 1:numel(withRefinement)
@@ -171,6 +171,8 @@ for iter = 1:numel(withRefinement)
         disp('Refining C');
         refinedC = refinementC(C,shape1,shape2,30);
         disp('Refinement done');
+    else
+        refinedC = C;
     end
     
     disp('Computing point to point');
@@ -208,6 +210,6 @@ for iter = 1:numel(withRefinement)
         pts(ind) = sum(geoError2<j);
     end
     
-    filename = strcat('./Result_scripts/2_Refinement/geo_error.',mesh_name,'_',num2str(mod(iter,11)),'.mat');
+    filename = strcat('./Result_scripts/2_Refinement/geo_error.',mesh_name,'_0.mat');
     save(filename,'pts');
 end
