@@ -57,7 +57,7 @@ One area of interest of shape analysis is the problem of shape matching. The gen
 
 The goal of the studied paper is to address the general problem of non rigid shape matching. This problem is quite difficult for several reasons. In contrary to rigid shape matching, the parameters of the transformation are not only tied to rotation and translation anymore. The space of parameters is much higher and it is expensive to optimize the transformation based only on point correspondences. 
 
-Several paper try to avoid doing this by using different methods that are trying to use only some landmark correspondences in order optimize the transformation, and establish a dense correspondence afterwards. The studied paper is instead focusing on the representation for the correspondences. The goal was to define a compact representation of shape mapping that allows efficient manipulation, that is multiscale and that can lead to simple optimization problems.
+Several papers try to avoid doing this by using different methods that are trying to use only some landmark correspondences in order to optimize the transformation, and establish a dense correspondence afterwards. The studied paper is instead focusing on the representation for the correspondences. The goal was to define a compact representation of shape mapping that allows efficient manipulation, that is multiscale and that can lead to simple optimization problems.
 
 
 \section{Method} %NICO
@@ -68,7 +68,7 @@ If $\mathcal{F}(M,\mathbb{R})$ and $\mathcal{F}(N,\mathbb{R})$ has a Basis \{$\p
 \begin{equation}
 	f = \sum_{i=1}^{\infty}a_i \phi_i^M  \quad \quad g = \sum_{j=1}^{\infty}b_j \phi_j^N
 \end{equation}
-It follows the map $T_F$ can be represented as a (possibly infinite) matrix $C$ where $C_{i,j}=<T_F(\phi_i^M),\phi_j^N>$ and we can write $Ca=b$.
+It follows the map $T_F$ can be represented as a (possibly infinite) matrix $C$ where $C_{i,j}=<T_F(\phi_i^M),\phi_j^N>$ and we can write $Ca=b$ from $T_F(f) = g$.
 
 Then the goal is to first recover $C$ and then calculate $T$.
 
@@ -84,7 +84,7 @@ Many natural constraints on the map $T$ become linear constraints in its functio
 \item[Regularization constraints] In order for $C$ to be associated with a point-to-point map between isometric shapes, $C$ must be a nearly-orthonormal map matrices. This property of $C$ is ensure by the commutativity of $C$ with the Laplace-Beltrami operator which can be written as a linear constraint $||R_FC-CS_F||=0$ where $R_F$ and $S_F$ are Laplace-Beltrami operators on $M$ and $N$.
 \end{description}
 
-After finding the matrix $C$ that best satifies the constraints, to recover a point-to-point conversion is made to obtain the map $T$.
+After finding the matrix $C$ that best satifies the constraints, a point-to-point conversion is made to recover the map $T$.
 
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
@@ -103,11 +103,11 @@ We know that the map $C$ bind the functions on the two spaces with the equation 
 The second type of constraints that have been added to the system are the Operator Commutativity constraints. The Laplace-Beltrami operator is being preserved under isometries, therefore we have defined constraints for this operator. Moreover, we rewrote the equation $||L_{2}C - CL_{1}|| = 0$ ($L_{i}$ being the discrete Laplace-Beltrami operator defined on the shape $i$) into a regular linear system $Ax = b$ where $x$ is the matrix $C$ written as a vector. 
 
 \subsubsection*{Weighting of the constraints}
-As we have an overly determined system $Ax = b$. Instead of minimizing $e = Ax-b$, we want to minimize $e = W(Ax-b)$ where W is a weight matrix. We can solve the problem by minimizing :
+As we have an overly determined system $Ax = b$. Instead of minimizing $e = Ax-b$, we want to minimize $e = W(Ax-b)$ where $W$ is a weight matrix. We can solve the problem by minimizing :
 \begin{equation}
 e^{T}e = (Ax-b)^{T}W^{T}W(Ax-b)
 \end{equation}
-This gives a system of linear equations in x :
+This gives a system of linear equations in $x$ :
 \begin{equation}
 A^{T}W^{T}WAx = A^{T}W^{T}Wb
 \end{equation}
@@ -146,7 +146,7 @@ Finally we tested the impact of removing the Operator Commutativity constraints 
  
 
 \section{Discussions} %NICO/ALEX
-We studied the method described in \cite{ovs}. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40x40$, and this was sufficient enough to get very good results. One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
+We studied the method described in \cite{ovs}. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40x40$, and this was sufficient enough to get very good results). One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
 
 \section*{Sources and Copyrights}
 \begin{itemize}
