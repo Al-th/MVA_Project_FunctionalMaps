@@ -47,7 +47,6 @@ ENS Cachan\\
 %%%%%%%%% ABSTRACT
 \begin{abstract} %NICO
 %Résumé <= Ce commentaire est utile.
-Shape 
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -79,15 +78,12 @@ Ovsjanikov \& al  use the first $n$ Laplace-Beltrami eigenfunctions as the basis
 \paragraph{Recover matrix C} 
 Many natural constraints on the map $T$ become linear constraints in its functional representation. The goal is to find enough constraints such that we can optimize $\underset{C}{\min}||Ca-b||$ where $a$ and $b$ are the representation of correspondences
 
-
-
-
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
 %Description de comment compute les constraints
 \subsection{Laplace Beltrami Operator}
-\subsection{Segmention} %NICO
-\subsection{Constraints} %ALEX
+\subsubsection*{Segmention} %NICO
+\subsubsection*{Constraints} %ALEX
 In order to solve the linear system, one has to compute all the previously stated constraints (function preservation constraints, landmark preservation constraints, segment preservation constraints, and operator commutativity constraints). \\
 
 First, one has to notice that landmark and segment preservation constraints are special cases of function preservation constraints. Indeed, if one wants to add a landmark or a segment preservation constraints, one only need to define functions that are defined on the shapes that are corresponding to point or segment descriptor. In our implementation we used indicator function, distance function to landmarks, and a combination of indicator function and descriptor functions (a function that is $0$ everywhere, and that has the value of the descriptor on the segment for example). \\
@@ -96,7 +92,7 @@ We know that the map $C$ bind the functions on the two spaces with the equation 
 
 The second type of constraints that have been added to the system are the Operator Commutativity constraints. The Laplace-Beltrami operator is being preserved under isometries, therefore we have defined constraints for this operator. Moreover, we rewrote the equation $||L_{2}C - CL_{1}|| = 0$ ($L_{i}$ being the discrete Laplace-Beltrami operator defined on the shape $i$) into a regular linear system $Ax = b$ where $x$ is the matrix $C$ written as a vector. 
 
-\subsection{Weighting of the constraints}
+\subsubsection*{Weighting of the constraints}
 As we have an overly determined system $Ax = b$. Instead of minimizing $e = Ax-b$, we want to minimize $e = W(Ax-b)$ where W is a weight matrix. We can solve the problem by minimizing :
 \begin{equation}
 e^{T}e = (Ax-b)^{T}W^{T}W(Ax-b)
@@ -106,41 +102,42 @@ This gives a system of linear equations in x :
 A^{T}W^{T}WAx = A^{T}W^{T}Wb
 \end{equation}
 
-Then a linear least square solver has been used to obtain the map C. \\
+\subsubsection*{Solving the system and post-processing}
+Finally a linear least square solver has been used to obtain the map C. \\
 
-We finally gravitated toward using the implementation of Pokrass et al. that provide a direct solution to the minimisation problem \textit{minimize $||AX - B||$ s.t. $X'*X = Id$}. Note that the $X'*X = Id$ is the regularization constraints mentioned in our article. Our inspiration for the refinement of the map C is coming from the same open source code. Moreover, in order to find the point-to-point correspondences, we have used an open source kd-tree implementation.
+We finally gravitated toward using the implementation of Pokrass et al. that provide a direct solution to the minimization problem \textit{minimize $||AX - B||$ s.t. $X'*X = Id$}. Note that the $X'*X = Id$ is the regularization constraints mentioned in our article. Our inspiration for the refinement of the map C is coming from the same open source code. Moreover, in order to find the point-to-point correspondences, we have used an open source kd-tree implementation.
 %TODO add reference to licence of flann
 %TODO add reference to pokrass, cf licence file
 
 
 
 \section{Results} %ALEX
-We first decided to test extensively how different constraints could affect the results obtained by this new representation. In order to do this, we used the constraints weighting to selectively choose which functions we wanted to use. Two type of decriptor functions were provided : the heat kernel signature, and the wave kernel signature. For each of those descriptors we had approximately 100 functions. Moreover we did compute different segment in order to add segment constraints. Additionally we tested with some landmark constraints. Moreover we tested the impact of the Operator Commutativity constraints on the results and we also wanted to test how the refinement improved the results. As the refinement does not always converge to the same solution, we computed several refinement of the same map C to analyse the results. Finally we tested quickly the impact of the use of the anisotropic Laplace-Beltrami operator 
-
+We first decided to test extensively how different constraints could affect the results obtained by this new representation. In order to do this, we used the constraints weighting to selectively choose which functions we wanted to use. Two type of descriptor functions were provided : the heat kernel signature, and the wave kernel signature. We also added segment constraints.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=.4\textwidth]{Images/weights.png}
-\caption{Impact of the utilisation of the different constraints on the error versus true correspondence}
+\caption{Impact of the the different constraints on the error versus true correspondence}
+\label{fig_weights}
 \end{figure}
 
-%TODO explain
+We can see on figure \ref{fig_weights} that using only one type of descriptor preservation constraints yield poor results. The best results asymptotically have been obtained using the three type of descriptor constraints equally weighted.
 
-
+Moreover we wanted to see how the refinement affected the geodesic error. We can see on figure \ref{fig_refinement} that it has a huge impact on the results. One should consider using it extensively.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=.4\textwidth]{Images/refinement.jpg}
+\includegraphics[width=.4\textwidth]{Images/refinement.png}
 \caption{Impact of the refinement step on the error versus true correspondence}
+\label{refinement}
 \end{figure}
-%TODO add figure
 
-
+Finally we tested the impact of removing the Operator Commutativity constraints on the results as well as using the anisotropic Laplace-Beltrami operator. As the impact on the results are not obvious, we decided not to include them in this report as we couldn't find a proper explanation of the different results obtained.
  
 
 \section{Discussions} %NICO/ALEX
-%Analyse des résultats
-
+%TODO ref
+We studied the method described by Ovsjnikov et al. that proposes a new representation for the non-rigid mapping of 3D shapes. This mapping relies on the concept of functional mapping that maps functions defined on a first shape onto an other shape. As we implemented this method, we have been able to confirm the fact that this new representation provides a compact representation of the complex transformation. We used only 40 eigenvalues (hence a map C of size $40x40$, and this was sufficient enough to get very good results. One of the main requirement of this method is to have good descriptor functions in order to compute the map, but we have shown that using the well known WKS and HKS actually yields very good results (those descriptor are also used to compute the segmentation). We tested the results on different transformation and even with strong isometry deformation we still obtain good results.
 
 %-------
 

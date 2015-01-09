@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.31)  9 JAN 2015 09:58
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.5.31)  9 JAN 2015 11:29
 entering extended mode
 **main.tex
 
@@ -367,119 +367,145 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--60
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
 
  []
 
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 67.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 67.
 
-Underfull \hbox (badness 1325) in paragraph at lines 66--68
+Underfull \hbox (badness 1325) in paragraph at lines 65--68
 []\OT1/ptm/m/n/10 Instead of putting in cor-re-spon-dence points on the
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 76.
 
-Underfull \hbox (badness 1173) in paragraph at lines 75--76
+Underfull \hbox (badness 1173) in paragraph at lines 87--88
 \OT1/ptm/m/n/10 con-straints, land-mark preser-va-tion con-straints, seg-ment
  []
 
 
-Underfull \hbox (badness 6995) in paragraph at lines 75--76
+Underfull \hbox (badness 6995) in paragraph at lines 87--88
 \OT1/ptm/m/n/10 preser-va-tion con-straints, and op-er-a-tor com-mu-ta-tiv-ity
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 75--76
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 77--78
+Underfull \vbox (badness 1221) has occurred while \output is active []
+
+ [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+]
+Underfull \hbox (badness 2662) in paragraph at lines 89--90
 \OT1/ptm/m/n/10 preser-va-tion con-straints are spe-cial cases of func-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--78
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--80
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
-[1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
 
  []
 
-<Images/weights.png, id=26, 774.64406pt x 524.71031pt>
+<Images/weights.png, id=27, 774.64406pt x 524.71031pt>
 File: Images/weights.png Graphic file (type png)
 
 <use Images/weights.png>
-Package pdftex.def Info: Images/weights.png used on input line 107.
+Package pdftex.def Info: Images/weights.png used on input line 119.
 (pdftex.def)             Requested size: 198.73946pt x 134.612pt.
 
 
+LaTeX Warning: Reference `fig_weights' on page 2 undefined on input line 124.
+
+
+LaTeX Warning: Reference `fig_refinement' on page 2 undefined on input line 126
+.
+
+<Images/refinement.png, id=29, 422.32782pt x 316.18124pt>
+File: Images/refinement.png Graphic file (type png)
+
+<use Images/refinement.png>
+Package pdftex.def Info: Images/refinement.png used on input line 130.
+(pdftex.def)             Requested size: 198.73946pt x 148.79335pt.
+
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/refinement.jpg, id=28, 491.58656pt x 295.1025pt>
-File: Images/refinement.jpg Graphic file (type jpg)
-
-<use Images/refinement.jpg>
-Package pdftex.def Info: Images/refinement.jpg used on input line 117.
-(pdftex.def)             Requested size: 198.73946pt x 119.30421pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-No file main.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 136.
 [2 <C:/Users/Nicolas/Documents/MVA/Object Recognition and Computer Vision/MVA_O
-bjectRecognitionProject/Report/Final report/Images/weights.png> <C:/Users/Nicol
-as/Documents/MVA/Object Recognition and Computer Vision/MVA_ObjectRecognitionPr
-oject/Report/Final report/Images/refinement.jpg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
+bjectRecognitionProject/Report/Final report/Images/weights.png>]
+No file main.bbl.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 149.
+[3
+
+ <C:/Users/Nicolas/Documents/MVA/Object Recognition and Computer Vision/MVA_Obj
+ectRecognitionProject/Report/Final report/Images/refinement.png (PNG copy)>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 149.
 
 ("C:\Users\Nicolas\Documents\MVA\Object Recognition and Computer Vision\MVA_Obj
 ectRecognitionProject\Report\Final report\main.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 136.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 149.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 149.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 149.
  ) 
 Here is how much of TeX's memory you used:
- 6173 strings out of 493921
- 89699 string characters out of 3144870
- 171886 words of memory out of 3000000
- 9367 multiletter control sequences out of 15000+200000
- 24847 words of font info for 61 fonts, out of 3000000 for 9000
+ 6201 strings out of 493921
+ 90128 string characters out of 3144870
+ 173886 words of memory out of 3000000
+ 9387 multiletter control sequences out of 15000+200000
+ 26473 words of font info for 63 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 34i,9n,26p,940b,322s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 34i,9n,26p,924b,324s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files (x86)/
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm7.pfb><C:/Program Files (x86)/
 MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.
 9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
 e1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/tim
 es/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on main.pdf (2 pages, 198118 bytes).
+Output written on main.pdf (3 pages, 178832 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 16 named destinations out of 1000 (max. 500000)
+ 101 PDF objects out of 1000 (max. 8388607)
+ 21 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
