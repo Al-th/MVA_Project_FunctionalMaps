@@ -47,6 +47,7 @@ ENS Cachan\\
 %%%%%%%%% ABSTRACT
 \begin{abstract} %NICO
 %Résumé <= Ce commentaire est utile.
+Shape 
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -62,6 +63,8 @@ Several paper try to avoid doing this by using different methods that are trying
 
 \section{Method} %NICO
 %Description de la fonctional map
+Instead of putting in correspondence points on the shapes, Ovsjanikov \& al propose to consider mapping between functions defined on the shapes. 
+Let $T : M \rightarrow N$ be a bijective mapping between manifolds $M$ and $N$. Given a scalar function $f: M \rightarrow \mathbb{R}$, we obtain the corresponding function $g : N \rightarrow \mathbb{R}$ by composition, $g=f \circ T^{-1}$. This induced transformation, $T_F : \mathcal{F}(M,\mathbb{R})\rightarrow \mathcal{F}(N,\mathbb{R})$ where $\mathcal{F}(\dot,\mathbb{R})$ denote a generic space of real-valued function, is the functional representation of the mapping $T$. 
 
 \section{Implementation}
 %TODO Recall what has been given, and what has been developped (given : LAB, fast_marching, recomputation of C, knn, ICP)
@@ -111,7 +114,7 @@ We first decided to test extensively how different constraints could affect the 
 
 \begin{figure}[h]
 \centering
-%\includegraphics[width=.4\textwidth]{Images/refinement.png}
+\includegraphics[width=.4\textwidth]{Images/refinement.jpg}
 \caption{Impact of the refinement step on the error versus true correspondence}
 \end{figure}
 %TODO add figure
